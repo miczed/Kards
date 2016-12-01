@@ -82,6 +82,7 @@ class MainPage extends Component {
     }
 
 
+
     _renderItem(item) {
         const onPress = () => {
             this.props.navigator.push({

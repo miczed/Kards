@@ -72,6 +72,17 @@ var styles = StyleSheet.create({
         },
         zIndex: 10,
     },
+    navbarButton: {
+        backgroundColor: 'transparent',
+        left: 15,
+        position: 'absolute',
+        top: 20,
+        height: 42,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+
+    },
     navbarTitle: {
         color: '#444',
         fontSize: 16,
