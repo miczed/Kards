@@ -52,7 +52,8 @@ class MainPage extends Component {
             categorySnap.forEach((category) => {
                 items.push({
                     title: category.val().title,
-                    _key: category.key
+                    _key: category.key,
+                    cardCount: (category.val().cards != null ? Object.keys(category.val().cards).length : 0),
                 });
             });
 

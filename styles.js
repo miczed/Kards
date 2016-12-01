@@ -2,7 +2,13 @@ const React = require('react-native')
 const {StyleSheet, Dimensions} = React
 const constants = {
     actionColor: '#24CE84',
-    brandColor: '#2D2D2D'
+    brandColor: '#2D2D2D',
+    dinNextMedium: 'DINNextRoundedLTPro-Medium',
+    dinNextBold: 'DINNextRoundedLTPro-Bold',
+    merriBold: 'Merriweather-Bold',
+    merriRegular: 'Merriweather-Regular',
+    merriItalic: 'Merriweather-Italic',
+    merriBoldItalic: 'MerriWeather-BoldItalic',
 };
 var dimensions = Dimensions.get('window');
 var vheight = dimensions.height;
@@ -19,22 +25,35 @@ var styles = StyleSheet.create({
     },
     listview: {
         flex: 1,
+        top:0,
+        zIndex:1,
     },
     li: {
         backgroundColor: '#fff',
-        borderBottomColor: '#eee',
+        borderBottomColor: '#E9E9E9',
         borderColor: 'transparent',
         borderWidth: 1,
-        paddingLeft: 16,
-        paddingTop: 14,
-        paddingBottom: 16,
+        paddingBottom: 9,
+        paddingTop: 12,
+        paddingHorizontal: 15,
+        flex: 1,
+        zIndex:1,
     },
     liContainer: {
         flex: 2,
     },
     liText: {
-        color: '#333',
+        color: constants.brandColor,
         fontSize: 16,
+        fontFamily: constants.merriBold,
+        paddingBottom: 4,
+    },
+    liSubText: {
+        color: constants.brandColor,
+        opacity: 0.5,
+        fontFamily: constants.dinNextMedium,
+        fontSize: 14,
+        marginRight: 15,
     },
     navbar: {
         backgroundColor: '#fff',
@@ -51,7 +70,7 @@ var styles = StyleSheet.create({
             height: 1,
             width: 0,
         },
-        zIndex: 5,
+        zIndex: 10,
     },
     navbarTitle: {
         color: '#444',
@@ -76,6 +95,7 @@ var styles = StyleSheet.create({
     metaText: {
         fontSize: 14,
         color: constants.brandColor,
+        fontFamily: constants.dinNextMedium,
         opacity: 0.5,
     },
     card: {

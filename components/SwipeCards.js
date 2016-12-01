@@ -56,7 +56,6 @@ var styles = StyleSheet.create({
 class SwipeCards extends Component {
     constructor(props) {
         super(props);
-
         this.state = {
             pan: new Animated.ValueXY(),
             enter: new Animated.Value(0.5),
@@ -65,6 +64,7 @@ class SwipeCards extends Component {
     }
 
     _goToNextCard() {
+
         let currentCardIdx = this.props.cards.indexOf(this.state.card);
         let newIdx = currentCardIdx + 1;
 
@@ -74,9 +74,22 @@ class SwipeCards extends Component {
             ? this.props.loop ? this.props.cards[0] : null
             : this.props.cards[newIdx];
 
+            if(newIdx > this.props.cards.length - 1) {
+                if(this.props.loop) {
+                    card = this.props.cards[0];
+                } else {
+                    card = null;
+                }
+            } else {
+                card = this.props.cards[newIdx];
+            }
+
+
+        console.log(this.state.card._key);
         this.setState({
             card: card
         });
+        console.log(this.state.card._key);
     }
 
     componentDidMount() {
@@ -91,11 +104,12 @@ class SwipeCards extends Component {
     }
 
     componentWillReceiveProps(nextProps){
+       /*
         if(nextProps.cards && nextProps.cards.length > 0){
             this.setState({
                 card: nextProps.cards[0]
             })
-        }
+        }*/
     }
 
     componentWillMount() {

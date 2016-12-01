@@ -12,6 +12,7 @@ class ListItem extends Component {
             <TouchableHighlight onPress={this.props.onPress}>
                 <View style={styles.li}>
                     <Text style={styles.liText}>{this.props.item.title}</Text>
+                    <Text style={styles.liSubText}>{this.props.item.cardCount} Karten</Text>
                 </View>
             </TouchableHighlight>
         );
