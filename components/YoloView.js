@@ -94,8 +94,6 @@ class LearnView extends Component {
 
         cardsRef.on('value', (cardSnap) => {
             // get children as an array
-            console.log()
-            console.log(cardSnap.val());
             let items = [];
             cardSnap.forEach((card) => {
                 items.push({
@@ -104,7 +102,6 @@ class LearnView extends Component {
                     back_html: card.val().back_html,
                     _key: card.key
                 });
-                console.log(items);
             });
 
             this.setState({
