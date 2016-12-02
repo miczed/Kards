@@ -17,41 +17,13 @@ import {
 
 import clamp from 'clamp';
 
+const styles = require('../styles.js');
+
 import Defaults from './Defaults.js';
 
 var SWIPE_THRESHOLD = 120;
 
-// Base Styles. Use props to override these values
-var styles = StyleSheet.create({
-    yup: {
-        borderColor: 'green',
-        borderWidth: 2,
-        position: 'absolute',
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        bottom: 20,
-        borderRadius: 5,
-        right: 20,
-    },
-    yupText: {
-        fontSize: 16,
-        color: 'green',
-    },
-    nope: {
-        borderColor: 'red',
-        borderWidth: 2,
-        position: 'absolute',
-        bottom: 20,
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        borderRadius: 5,
-        left: 20,
-    },
-    nopeText: {
-        fontSize: 16,
-        color: 'red',
-    }
-});
+
 
 class SwipeCards extends Component {
     constructor(props) {
@@ -195,11 +167,14 @@ class SwipeCards extends Component {
 
         let yupOpacity = pan.x.interpolate({inputRange: [0, 150], outputRange: [0, 1]});
         let yupScale = pan.x.interpolate({inputRange: [0, 150], outputRange: [0.5, 1], extrapolate: 'clamp'});
-        let animatedYupStyles = {transform: [{scale: yupScale}], opacity: yupOpacity}
+        let yupTranslateY = pan.x.interpolate({inputRange: [0,150],outputRange: [0, -50], extrapolate: 'clamp'});
+
+        let animatedYupStyles = {transform: [{translateY: yupTranslateY}], opacity: yupOpacity}
 
         let nopeOpacity = pan.x.interpolate({inputRange: [-150, 0], outputRange: [1, 0]});
         let nopeScale = pan.x.interpolate({inputRange: [-150, 0], outputRange: [1, 0.5], extrapolate: 'clamp'});
-        let animatedNopeStyles = {transform: [{scale: nopeScale}], opacity: nopeOpacity}
+        let nopeTranslateY = pan.x.interpolate({inputRange: [-150,0],outputRange: [-50, 0], extrapolate: 'clamp'});
+        let animatedNopeStyles = {transform: [{translateY: nopeTranslateY}], opacity: nopeOpacity}
 
         return (
             <View style={this.props.containerStyle}>
@@ -211,6 +186,10 @@ class SwipeCards extends Component {
                 )
                     : this.renderNoMoreCards() }
 
+                <View style={styles.meta}>
+                    <View style={styles.viewDivider} />
+                    <Text style={styles.metaText}>{this.props.metaText}</Text>
+                </View>
 
                 { this.props.renderNope
                     ? this.props.renderNope(pan)
@@ -267,7 +246,7 @@ SwipeCards.propTypes = {
     yupStyle: View.propTypes.style,
     yupTextStyle: Text.propTypes.style,
     nopeStyle: View.propTypes.style,
-    nopeTextStyle: Text.propTypes.style
+    nopeTextStyle: Text.propTypes.style,
 };
 
 SwipeCards.defaultProps = {

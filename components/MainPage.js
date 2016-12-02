@@ -10,6 +10,7 @@ import {
     AlertIOS,
     NavigatorIOS,
     StatusBar,
+    ActivityIndicator,
 } from 'react-native';
 
 const ListItem = require('../components/ListItem');
@@ -58,6 +59,7 @@ class MainPage extends Component {
             });
 
             this.setState({
+                categories: items,
                 dataSource: this.state.dataSource.cloneWithRows(items)
             });
 
@@ -67,8 +69,15 @@ class MainPage extends Component {
     componentDidMount() {
         this.listenForItems(this.categoriesRef);
     }
-
-    render() {
+    renderLoadingView() {
+        return (
+            <View style={styles.viewContainer}>
+                <NavBar style={styles.navbar} title={this.props.viewTitle }/>
+                <View style={styles.loadingView}><ActivityIndicator size='large' /><Text style={styles.loadingViewText}>KARTEN WERDEN GELADEN</Text></View>
+            </View>
+        );
+    }
+    renderCategoriesView() {
         return (
             <View style={styles.container}>
                 <NavBar style={styles.navbar} title={this.props.viewTitle }/>
@@ -80,8 +89,13 @@ class MainPage extends Component {
             </View>
         )
     }
-
-
+    render() {
+        if(this.state.categories) {
+            return this.renderCategoriesView();
+        } else {
+            return this.renderLoadingView();
+        }
+    }
 
     _renderItem(item) {
         const onPress = () => {

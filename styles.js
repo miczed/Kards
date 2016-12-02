@@ -2,7 +2,8 @@ const React = require('react-native')
 const {StyleSheet, Dimensions} = React
 const constants = {
     actionColor: '#24CE84',
-    brandColor: '#2D2D2D',
+    brandMainColor: '#2D2D2D',
+    brandSubColor: '#969696',
     dinNextMedium: 'DINNextRoundedLTPro-Medium',
     dinNextBold: 'DINNextRoundedLTPro-Bold',
     merriBold: 'Merriweather-Bold',
@@ -43,13 +44,13 @@ var styles = StyleSheet.create({
         flex: 2,
     },
     liText: {
-        color: constants.brandColor,
+        color: constants.brandMainColor,
         fontSize: 16,
         fontFamily: constants.merriBold,
         paddingBottom: 4,
     },
     liSubText: {
-        color: constants.brandColor,
+        color: constants.brandMainColor,
         opacity: 0.5,
         fontFamily: constants.dinNextMedium,
         fontSize: 14,
@@ -63,7 +64,7 @@ var styles = StyleSheet.create({
         justifyContent: 'center',
         height: 65,
         flexDirection: 'row',
-        shadowColor: constants.brandColor,
+        shadowColor: constants.brandMainColor,
         shadowOpacity: 0.1,
         shadowRadius: 5,
         shadowOffset: {
@@ -88,10 +89,22 @@ var styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: "500",
         paddingTop: 30,
+        fontFamily: constants.dinNextMedium,
     },
     viewContainer: {
         top: 0,
         flex: 1,
+    },
+    loadingView: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    loadingViewText: {
+        marginTop: 5,
+        fontFamily: constants.dinNextMedium,
+        fontSize: 14,
+        color: constants.brandSubColor,
     },
     cardWrapper: {
         backgroundColor: '#ff0010',
@@ -102,10 +115,11 @@ var styles = StyleSheet.create({
         alignItems: 'center',
         flex: 0,
         justifyContent: 'flex-start',
+        zIndex: 2,
     },
     metaText: {
         fontSize: 14,
-        color: constants.brandColor,
+        color: constants.brandMainColor,
         fontFamily: constants.dinNextMedium,
         opacity: 0.5,
     },
@@ -119,19 +133,51 @@ var styles = StyleSheet.create({
         zIndex: 1,
     },
     cardBack: {
-        backgroundColor: 'transparent',
+        backgroundColor: 'red',
         alignSelf: 'stretch',
         borderColor: 'transparent',
         zIndex: 1,
-        width: vwidth - 60,
+        width: vwidth,
     },
     viewDivider: {
         height: 1,
         width: 100,
-        backgroundColor: constants.brandColor,
+        backgroundColor: constants.brandMainColor,
         opacity: 0.1,
         top: 0,
         marginBottom: 15,
+    },
+    yup: {
+        backgroundColor: '#B8E986',
+        position: 'absolute',
+        bottom: -50,
+        right: 0,
+        height: 50,
+        left: 0,
+        alignItems: 'center',
+        paddingTop: 18,
+        zIndex: 100,
+    },
+    yupText: {
+        color: 'white',
+        fontFamily: constants.dinNextMedium,
+        fontSize: 16,
+    },
+    nope: {
+        backgroundColor: '#E98686',
+        position: 'absolute',
+        bottom: -50,
+        right: 0,
+        height: 50,
+        left: 0,
+        alignItems: 'center',
+        paddingTop: 18,
+        zIndex: 100,
+    },
+    nopeText: {
+        color: 'white',
+        fontFamily: constants.dinNextMedium,
+        fontSize: 16,
     }
 });
 
