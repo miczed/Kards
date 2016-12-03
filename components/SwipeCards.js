@@ -17,6 +17,7 @@ import {
 
 import clamp from 'clamp';
 import Emoji from 'react-native-emoji';
+import Button from 'react-native-button';
 const styles = require('../styles.js');
 
 import Defaults from './Defaults.js';
@@ -61,7 +62,21 @@ class SwipeCards extends Component {
             card: card
         });
     }
-
+    reloadAllCards = () => {
+        this.setState({
+            card: this.props.cards[0],
+            cardsKnown: [],
+            cardsNotKnown: [],
+        })
+    }
+    reloadNotKnownCards= () => {
+        console.log('Reload not known cards');
+        this.setState({
+            cardsKnown: [],
+            cardsNotKnown: [],
+        });
+        this.props.resetCards(this.state.cardsNotKnown);
+    }
     componentDidMount() {
         this._animateEntrance();
     }
@@ -74,12 +89,12 @@ class SwipeCards extends Component {
     }
 
     componentWillReceiveProps(nextProps){
-       /*
+       console.log('set new props');
         if(nextProps.cards && nextProps.cards.length > 0){
             this.setState({
-                card: nextProps.cards[0]
+                card: nextProps.cards[0],
             })
-        }*/
+        }
     }
 
     componentWillMount() {
@@ -155,11 +170,36 @@ class SwipeCards extends Component {
                     <Text style={styles.textBold}>
                         {
                         " " + this.state.cardsKnown.length + this.state.cardsNotKnown.length
-                        } { this.state.cardsKnown.length + this.state.cardsNotKnown.length > 1 ? 'Karten' : 'Karte' } </Text>
+                        } { (this.state.cardsKnown.length + this.state.cardsNotKnown.length > 1) ? 'Karten' : 'Karte' } </Text>
                     angesehen. Davon hast du
                     <Text style={[styles.textRed, styles.textBold]}> { this.state.cardsKnown.length } gewusst </Text>
                     und <Text style={[styles.textGreen, styles.textBold]}>{this.state.cardsNotKnown.length} nicht gewusst</Text>.
                 </Text>
+                <View style={styles.textDivider}></View>
+                <Text style={styles.noMoreCardsText}>Welche Karten möchtest du erneut abfragen?</Text>
+                <Button
+                    containerStyle={styles.buttonContainer}
+                    style={styles.buttonText}
+                    onPress={this.reloadAllCards}>
+                    ALLE
+                </Button>
+                {
+                    this.state.cardsNotKnown.length > 0 ?
+                        <Button
+                            containerStyle={styles.buttonContainer}
+                            style={styles.buttonText}
+                            onPress={this.reloadNotKnownCards}>
+                            NICHT GEKONNTE
+                        </Button>
+                    : null
+                }
+                <Button
+                    containerStyle={styles.buttonContainer}
+                    style={styles.buttonText}
+                    onPress={this.props.closeView}>
+                    SCHLIESSEN
+                </Button>
+
             </View>
         )
     }
@@ -197,13 +237,18 @@ class SwipeCards extends Component {
                     <Animated.View style={[this.props.cardStyle, animatedCardstyles]} {...this._panResponder.panHandlers}>
                         {this.renderCard(this.state.card)}
                     </Animated.View>
+
                 )
                     : this.renderNoMoreCards() }
 
-                <View style={styles.meta}>
-                    <View style={styles.viewDivider} />
-                    <Text style={styles.metaText}>{this.props.metaText}</Text>
-                </View>
+                {
+                    this.state.card ? (
+                        <View style={styles.meta}>
+                            <View style={styles.viewDivider} />
+                            <Text style={styles.metaText}>{ this.props.cards.indexOf(this.state.card) + 1} von { this.props.cards.length } in {this.props.categoryName }</Text>
+                        </View>
+                    ) : null
+                }
 
                 { this.props.renderNope
                     ? this.props.renderNope(pan)

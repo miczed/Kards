@@ -148,6 +148,12 @@ class LearnView extends Component {
             metaText: newCount + " von " + this.state.cardCount +" in "+this.state.categoryName
         });
     }
+    resetCards = (newCards) => {
+        console.log(newCards),
+        this.setState({
+            cards: newCards,
+        })
+    }
     renderLoadingView() {
         return (
             <View style={styles.viewContainer}>
@@ -179,7 +185,10 @@ class LearnView extends Component {
                     yupTextStyle={styles.yupText}
                     nopeStyle={styles.nope}
                     nopeTextStyle={styles.nopeText}
-                    metaText={this.state.metaText}
+                    //metaText={this.state.metaText}
+                    resetCards={this.resetCards}
+                    categoryName={this.state.categoryName}
+                    closeView={() => {this.props.navigator.pop();}}
                 />
             </View>
         );

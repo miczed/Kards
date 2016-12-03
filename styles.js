@@ -197,13 +197,45 @@ var styles = StyleSheet.create({
     noMoreCardsText: {
         fontFamily: constants.dinNextRegular,
         color: constants.brandSubColor,
-        width: vwidth - 60,
-        marginTop: 30,
+        width: vwidth - 120,
+        marginTop: 15,
+        marginBottom: 15,
         textAlign: 'center',
         fontSize: 18,
     },
     noMoreCardsEmoji: {
         fontSize: 72,
+        marginBottom: 15,
+    },
+    buttonContainer: {
+        marginTop: 15,
+        padding:10, height:50, borderRadius:50, backgroundColor: 'white',
+        shadowColor: constants.brandMainColor,
+        shadowOpacity: 0.15,
+        shadowRadius: 10,
+        shadowOffset: {
+            height: 4,
+            width: 0,
+        },
+        borderColor: '#F1F1F1',
+        borderWidth: 1,
+        paddingTop: 16,
+        width: vwidth - 120,
+    },
+    buttonText: {
+        fontFamily: constants.dinNextMedium,
+        color: constants.brandSubColor,
+        fontSize: 18,
+        backgroundColor: 'white',
+        letterSpacing: 2,
+    },
+    textDivider: {
+        height: 1,
+        width: 100,
+        backgroundColor: constants.brandMainColor,
+        opacity: 0.1,
+        marginBottom: 15,
+        marginTop: 15,
     }
 });
 
