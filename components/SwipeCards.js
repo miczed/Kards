@@ -26,6 +26,8 @@ var SWIPE_THRESHOLD = 120;
 
 
 
+
+
 class SwipeCards extends Component {
     constructor(props) {
         super(props);
@@ -35,6 +37,7 @@ class SwipeCards extends Component {
             card: this.props.cards ? this.props.cards[0] : null,
             cardsKnown: [],
             cardsNotKnown: [],
+            uid: this.props.uid,
         }
     }
 
@@ -70,7 +73,6 @@ class SwipeCards extends Component {
         })
     }
     reloadNotKnownCards= () => {
-        console.log('Reload not known cards');
         this.setState({
             cardsKnown: [],
             cardsNotKnown: [],
@@ -87,13 +89,15 @@ class SwipeCards extends Component {
             { toValue: 1, friction: 8 }
         ).start();
     }
-
     componentWillReceiveProps(nextProps){
-       console.log('set new props');
-        if(nextProps.cards && nextProps.cards.length > 0){
-            this.setState({
-                card: nextProps.cards[0],
-            })
+        // if parent component set a new uid then cards are overwritten
+        if(this.state.uid != nextProps.uid) {
+            if (nextProps.cards && nextProps.cards.length > 0) {
+                this.setState({
+                    card: nextProps.cards[0],
+                    uid: nextProps.uid,
+                })
+            }
         }
     }
 
@@ -169,8 +173,8 @@ class SwipeCards extends Component {
                     Du hast
                     <Text style={styles.textBold}>
                         {
-                        " " + this.state.cardsKnown.length + this.state.cardsNotKnown.length
-                        } { (this.state.cardsKnown.length + this.state.cardsNotKnown.length > 1) ? 'Karten' : 'Karte' } </Text>
+                           " " + (this.state.cardsKnown.length + this.state.cardsNotKnown.length)
+                        } { ((this.state.cardsKnown.length + this.state.cardsNotKnown.length) > 1) ? 'Karten' : 'Karte' } </Text>
                     angesehen. Davon hast du
                     <Text style={[styles.textRed, styles.textBold]}> { this.state.cardsKnown.length } gewusst </Text>
                     und <Text style={[styles.textGreen, styles.textBold]}>{this.state.cardsNotKnown.length} nicht gewusst</Text>.

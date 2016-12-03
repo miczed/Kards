@@ -111,7 +111,7 @@ var styles = StyleSheet.create({
         justifyContent: 'center',
     },
     loadingViewText: {
-        marginTop: 5,
+        marginTop: 15,
         fontFamily: constants.dinNextMedium,
         fontSize: 14,
         color: constants.brandSubColor,
