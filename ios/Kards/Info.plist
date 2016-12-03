@@ -39,6 +39,7 @@
 	<string></string>
 	<key>UIAppFonts</key>
 	<array>
+		<string>DINNextRoundedLTPro-Regular.ttf</string>
 		<string>Merriweather-Italic.ttf</string>
 		<string>Merriweather-Regular.ttf</string>
 		<string>Merriweather-BoldIt.ttf</string>

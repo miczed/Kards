@@ -170,8 +170,7 @@ class LearnView extends Component {
                 <SwipeCards
                     cards={this.state.cards}
                     renderCard={(cardData) => <Card {...cardData} />}
-                    renderNoMoreCards={() => <Text>No more Cards.</Text>}
-                    loop={true}
+                    loop={false}
                     handleYup={this.nextCard}
                     handleNope={this.nextCard}
                     noText={"NICHT GEWUSST"}

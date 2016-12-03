@@ -16,7 +16,7 @@ import {
 } from 'react-native';
 
 import clamp from 'clamp';
-
+import Emoji from 'react-native-emoji';
 const styles = require('../styles.js');
 
 import Defaults from './Defaults.js';
@@ -32,6 +32,8 @@ class SwipeCards extends Component {
             pan: new Animated.ValueXY(),
             enter: new Animated.Value(0.5),
             card: this.props.cards ? this.props.cards[0] : null,
+            cardsKnown: [],
+            cardsNotKnown: [],
         }
     }
 
@@ -55,13 +57,9 @@ class SwipeCards extends Component {
             } else {
                 card = this.props.cards[newIdx];
             }
-
-
-        console.log(this.state.card._key);
         this.setState({
             card: card
         });
-        console.log(this.state.card._key);
     }
 
     componentDidMount() {
@@ -112,9 +110,13 @@ class SwipeCards extends Component {
 
                 if (Math.abs(this.state.pan.x._value) > SWIPE_THRESHOLD) {
 
-                    this.state.pan.x._value > 0
-                        ? this.props.handleYup(this.state.card)
-                        : this.props.handleNope(this.state.card)
+                    if(this.state.pan.x._value > 0) {
+                        this.props.handleYup(this.state.card);
+                        this.state.cardsKnown.push(this.state.card);
+                    } else {
+                        this.props.handleNope(this.state.card);
+                        this.state.cardsNotKnown.push(this.state.card);
+                    }
 
                     this.props.cardRemoved
                         ? this.props.cardRemoved(this.props.cards.indexOf(this.state.card))
@@ -146,7 +148,19 @@ class SwipeCards extends Component {
             return this.props.renderNoMoreCards();
 
         return (
-            <Defaults.NoMoreCards />
+            <View style={styles.noMoreCards}>
+                <Text style={styles.noMoreCardsEmoji}><Emoji name="trophy"/></Text>
+                <Text style={styles.noMoreCardsText}>
+                    Du hast
+                    <Text style={styles.textBold}>
+                        {
+                        " " + this.state.cardsKnown.length + this.state.cardsNotKnown.length
+                        } { this.state.cardsKnown.length + this.state.cardsNotKnown.length > 1 ? 'Karten' : 'Karte' } </Text>
+                    angesehen. Davon hast du
+                    <Text style={[styles.textRed, styles.textBold]}> { this.state.cardsKnown.length } gewusst </Text>
+                    und <Text style={[styles.textGreen, styles.textBold]}>{this.state.cardsNotKnown.length} nicht gewusst</Text>.
+                </Text>
+            </View>
         )
     }
 

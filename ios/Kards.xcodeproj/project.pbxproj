@@ -43,6 +43,8 @@
 		D777FD331DF0794B00AF7C0E /* DINNextRoundedLTPro-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D777FD301DF0794B00AF7C0E /* DINNextRoundedLTPro-Bold.ttf */; };
 		D777FD341DF0794B00AF7C0E /* DINNextRoundedLTPro-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D777FD311DF0794B00AF7C0E /* DINNextRoundedLTPro-Medium.ttf */; };
 		D777FD351DF0794B00AF7C0E /* DINNextRoundedLTPro-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D777FD311DF0794B00AF7C0E /* DINNextRoundedLTPro-Medium.ttf */; };
+		D7D6AD021DF240E50053F088 /* DINNextRoundedLTPro-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D7D6AD011DF240E50053F088 /* DINNextRoundedLTPro-Regular.ttf */; };
+		D7D6AD031DF240E50053F088 /* DINNextRoundedLTPro-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D7D6AD011DF240E50053F088 /* DINNextRoundedLTPro-Regular.ttf */; };
 		E5802F8FD1BA4054A3CF4FA2 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 698E640908B64D8982F695CD /* MaterialIcons.ttf */; };
 		F0F01335D1C74CD7997C55F1 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CB08DBCAF7C4A49A38CBCB9 /* libRNVectorIcons.a */; };
 /* End PBXBuildFile section */
@@ -221,6 +223,7 @@
 		D777FD2D1DF06C9800AF7C0E /* Merriweather-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Merriweather-Italic.ttf"; sourceTree = "<group>"; };
 		D777FD301DF0794B00AF7C0E /* DINNextRoundedLTPro-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DINNextRoundedLTPro-Bold.ttf"; sourceTree = "<group>"; };
 		D777FD311DF0794B00AF7C0E /* DINNextRoundedLTPro-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DINNextRoundedLTPro-Medium.ttf"; sourceTree = "<group>"; };
+		D7D6AD011DF240E50053F088 /* DINNextRoundedLTPro-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DINNextRoundedLTPro-Regular.ttf"; sourceTree = "<group>"; };
 		EEF9015CAA9944B8B8A1986A /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -432,6 +435,7 @@
 		D777FD1D1DF069C300AF7C0E /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				D7D6AD011DF240E50053F088 /* DINNextRoundedLTPro-Regular.ttf */,
 				D777FD301DF0794B00AF7C0E /* DINNextRoundedLTPro-Bold.ttf */,
 				D777FD311DF0794B00AF7C0E /* DINNextRoundedLTPro-Medium.ttf */,
 				D777FD241DF06A2A00AF7C0E /* Merriweather-Bold.ttf */,
@@ -714,6 +718,7 @@
 				D777FD291DF06C8200AF7C0E /* Merriweather-BoldIt.ttf in Resources */,
 				D777FD351DF0794B00AF7C0E /* DINNextRoundedLTPro-Medium.ttf in Resources */,
 				D777FD2C1DF06C9000AF7C0E /* Merriweather-Regular.ttf in Resources */,
+				D7D6AD031DF240E50053F088 /* DINNextRoundedLTPro-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -731,6 +736,7 @@
 				D777FD321DF0794B00AF7C0E /* DINNextRoundedLTPro-Bold.ttf in Resources */,
 				9472A47FE2554F42B163D738 /* Entypo.ttf in Resources */,
 				C3EC6422E2FA4597837F5EF0 /* EvilIcons.ttf in Resources */,
+				D7D6AD021DF240E50053F088 /* DINNextRoundedLTPro-Regular.ttf in Resources */,
 				BC64296B7BC24AC49C2D2632 /* FontAwesome.ttf in Resources */,
 				34A92F765822420890897CDD /* Foundation.ttf in Resources */,
 				471E027F34B64917B703AC2F /* Ionicons.ttf in Resources */,

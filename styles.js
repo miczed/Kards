@@ -6,6 +6,7 @@ const constants = {
     brandSubColor: '#969696',
     dinNextMedium: 'DINNextRoundedLTPro-Medium',
     dinNextBold: 'DINNextRoundedLTPro-Bold',
+    dinNextRegular: 'DINNextRoundedLTPro-Regular',
     merriBold: 'Merriweather-Bold',
     merriRegular: 'Merriweather-Regular',
     merriItalic: 'Merriweather-Italic',
@@ -19,6 +20,15 @@ var styles = StyleSheet.create({
     container: {
         backgroundColor: '#fff',
         flex: 1,
+    },
+    textBold: {
+      fontFamily: constants.dinNextBold,
+    },
+    textRed: {
+        color: '#8FBB5D',
+    },
+    textGreen: {
+        color: '#C4615E',
     },
     navigator: {
         top: 0,
@@ -133,7 +143,7 @@ var styles = StyleSheet.create({
         zIndex: 1,
     },
     cardBack: {
-        backgroundColor: 'red',
+        backgroundColor: 'transparent',
         alignSelf: 'stretch',
         borderColor: 'transparent',
         zIndex: 1,
@@ -178,6 +188,22 @@ var styles = StyleSheet.create({
         color: 'white',
         fontFamily: constants.dinNextMedium,
         fontSize: 16,
+    },
+    noMoreCards: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    noMoreCardsText: {
+        fontFamily: constants.dinNextRegular,
+        color: constants.brandSubColor,
+        width: vwidth - 60,
+        marginTop: 30,
+        textAlign: 'center',
+        fontSize: 18,
+    },
+    noMoreCardsEmoji: {
+        fontSize: 72,
     }
 });
 
