@@ -142,7 +142,7 @@ class SwipeCards extends Component {
                         : null
 
                     Animated.decay(this.state.pan, {
-                        velocity: {x: velocity, y: vy},
+                        velocity: {x: velocity, y: 0},
                         deceleration: 0.98
                     }).start(this._resetState.bind(this))
                 } else {
