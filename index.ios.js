@@ -4,7 +4,7 @@
  * @flow
  */
 
-
+import * as firebase from 'firebase';
 import React, { Component } from 'react';
 import {
     AppRegistry,
@@ -19,11 +19,20 @@ import {
 } from 'react-native';
 
 
-const MainPage = require('./components/MainPage');
+const CategoryView = require('./components/CategoryView');
 const styles = require('./styles.js');
 
-const YoloView = require('./components/YoloView');
+const YoloView = require('./components/LearnView');
 
+// Initialize Firebase
+const firebaseConfig = {
+    apiKey: "AIzaSyCZZgxh3tDa8OAFJCKCHRj_8q3JW2FW0Ho",
+    authDomain: "kards-90223.firebaseapp.com",
+    databaseURL: "https://kards-90223.firebaseio.com",
+    storageBucket: "kards-90223.appspot.com",
+    messagingSenderId: "600593412749"
+};
+const firebaseApp = firebase.initializeApp(firebaseConfig);
 
 export default class Kards extends Component {
 
@@ -37,8 +46,8 @@ export default class Kards extends Component {
                     style={styles.navigator}
                     initialRoute={{
                         title: 'Kards',
-                        component: MainPage,
-                        passProps: { viewTitle: 'Kards' }
+                        component: CategoryView,
+                        passProps: { viewTitle: 'Kards', firebaseApp: firebaseApp }
                     }}
                     shadowHidden={false}
                     navigationBarHidden={true}

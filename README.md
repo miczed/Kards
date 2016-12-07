@@ -11,9 +11,12 @@ Kards
 - [ ] add repeat button to cardview so last card can be reloaded (if swipe happened by accident)
 - [ ] scale images in webview automatically (and enlarge them when users taps on it)
 - [x] fix formula display
-- [ ] prevent card from moving up during / after swipe gesture
+- [x] prevent card from moving up during / after swipe gesture
 - [ ] store progress (known, not known) in firebase
 - [ ] add small animations to learn-overview at the end of a lesson
+- [ ] replace navigatorIOS with react-native-navigation
+- [x] add support for hierarchical categories
+- [x] shuffle cards in LearnView
 
 #Future Todo's
 - [ ] render cards with native components instead of inside a webview

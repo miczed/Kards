@@ -1,4 +1,4 @@
-import * as firebase from 'firebase';
+
 import React, { Component } from 'react';
 import {
     AppRegistry,
@@ -13,37 +13,31 @@ import {
     ActivityIndicator,
 } from 'react-native';
 
+const LearnView = require('../components/LearnView');
 const ListItem = require('../components/ListItem');
 const styles = require('../styles.js');
-const YoloView = require('../components/YoloView');
 const NavBar = require('../components/NavBar');
 
-// Initialize Firebase
-const firebaseConfig = {
-    apiKey: "AIzaSyCZZgxh3tDa8OAFJCKCHRj_8q3JW2FW0Ho",
-    authDomain: "kards-90223.firebaseapp.com",
-    databaseURL: "https://kards-90223.firebaseio.com",
-    storageBucket: "kards-90223.appspot.com",
-    messagingSenderId: "600593412749"
-};
-const firebaseApp = firebase.initializeApp(firebaseConfig);
 
-
-class MainPage extends Component {
+class CategoryView extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
             dataSource: new ListView.DataSource({
                 rowHasChanged: (row1, row2) => row1 !== row2,
-            })
+            }),
+            parentCategory: props.parentCategoryKey ? props.parentCategoryKey : "",
+            viewTitle: props.parentCategoryName ? props.parentCategoryName : this.props.viewTitle,
+            firebaseApp: this.props.firebaseApp,
+            backBtn: this.props.backBtn ? this.props.backBtn : false
         };
-        this.categoriesRef = this.getRef().child('categories');
+        this.categoriesRef = this.getRef().child('categories').orderByChild("parent").equalTo(this.state.parentCategory);
         this.cardsRef = this.getRef().child('cards');
     }
 
     getRef() {
-        return firebaseApp.database().ref();
+        return this.state.firebaseApp.database().ref();
     }
 
     listenForItems(categoriesRef) {
@@ -72,7 +66,7 @@ class MainPage extends Component {
     renderLoadingView() {
         return (
             <View style={styles.viewContainer}>
-                <NavBar style={styles.navbar} title={this.props.viewTitle }/>
+                <NavBar style={styles.navbar} title={this.state.viewTitle } backBtn = {this.state.backBtn} navigator={this.props.navigator}/>
                 <View style={styles.loadingView}><ActivityIndicator size='large' /><Text style={styles.loadingViewText}>KARTEN WERDEN GELADEN</Text></View>
             </View>
         );
@@ -80,7 +74,7 @@ class MainPage extends Component {
     renderCategoriesView() {
         return (
             <View style={styles.container}>
-                <NavBar style={styles.navbar} title={this.props.viewTitle }/>
+                <NavBar style={styles.navbar} title={this.state.viewTitle } backBtn = {this.state.backBtn} navigator={this.props.navigator}/>
                 <ListView
                     dataSource={this.state.dataSource}
                     renderRow={this._renderItem.bind(this)}
@@ -99,13 +93,25 @@ class MainPage extends Component {
 
     _renderItem(item) {
         const onPress = () => {
-            this.props.navigator.push({
-                title: item.title,
-                component: YoloView,
-                passProps: {categoryKey: item._key, categoryName: item.title, firebaseApp: firebaseApp, viewTitle: item.title},
-                navigationBarHidden:  true,
-                backButtonTitle: ''
-            });
+            // it is an empty category or a parent category
+            if(item.cardCount == 0) {
+                this.props.navigator.push({
+                    title: item.title,
+                    component: CategoryView,
+                    passProps: { parentCategoryName: item.title, parentCategoryKey: item._key, firebaseApp: this.state.firebaseApp, backBtn: true },
+                    navigationBarHidden:  true,
+                    backButtonTitle: ''
+                });
+            } else { // category has cards
+                this.props.navigator.push({
+                    title: item.title,
+                    component: LearnView,
+                    passProps: {categoryKey: item._key, categoryName: item.title, firebaseApp: this.state.firebaseApp, viewTitle: item.title},
+                    navigationBarHidden:  true,
+                    backButtonTitle: ''
+                });
+            }
+
         };
         return (
             <ListItem item={item} onPress={onPress} />
@@ -113,4 +119,4 @@ class MainPage extends Component {
     }
 }
 
-module.exports = MainPage;
+module.exports = CategoryView;
