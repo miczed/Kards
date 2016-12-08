@@ -224,18 +224,16 @@ class SwipeCards extends Component {
         let animatedCardstyles = {transform: [{translateX}, {translateY}, {scale}], opacity};
 
         let yupOpacity = pan.x.interpolate({inputRange: [0, 150], outputRange: [0, 1]});
-        let yupScale = pan.x.interpolate({inputRange: [0, 150], outputRange: [0.5, 1], extrapolate: 'clamp'});
         let yupTranslateY = pan.x.interpolate({inputRange: [0,150],outputRange: [0, -50], extrapolate: 'clamp'});
 
         let animatedYupStyles = {transform: [{translateY: yupTranslateY}], opacity: yupOpacity}
 
         let nopeOpacity = pan.x.interpolate({inputRange: [-150, 0], outputRange: [1, 0]});
-        let nopeScale = pan.x.interpolate({inputRange: [-150, 0], outputRange: [1, 0.5], extrapolate: 'clamp'});
         let nopeTranslateY = pan.x.interpolate({inputRange: [-150,0],outputRange: [-50, 0], extrapolate: 'clamp'});
         let animatedNopeStyles = {transform: [{translateY: nopeTranslateY}], opacity: nopeOpacity}
 
         return (
-            <View style={this.props.containerStyle}>
+            <View style={[this.props.containerStyle, styles.cardsView]}>
                 { this.state.card
                     ? (
                     <Animated.View style={[this.props.cardStyle, animatedCardstyles]} {...this._panResponder.panHandlers}>
@@ -248,7 +246,6 @@ class SwipeCards extends Component {
                 {
                     this.state.card ? (
                         <View style={styles.meta}>
-                            <View style={styles.viewDivider} />
                             <Text style={styles.metaText}>{ this.props.cards.indexOf(this.state.card) + 1} von { this.props.cards.length } in {this.props.categoryName }</Text>
                         </View>
                     ) : null

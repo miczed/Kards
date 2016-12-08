@@ -18,7 +18,7 @@ var vwidth = dimensions.width;
 
 var styles = StyleSheet.create({
     container: {
-        backgroundColor: '#fff',
+        backgroundColor: '#FAFAFA',
         flex: 1,
     },
     textBold: {
@@ -75,10 +75,10 @@ var styles = StyleSheet.create({
         height: 65,
         flexDirection: 'row',
         shadowColor: constants.brandMainColor,
-        shadowOpacity: 0.1,
-        shadowRadius: 5,
+        shadowOpacity: 0.15,
+        shadowRadius: 1,
         shadowOffset: {
-            height: 1,
+            height: 0,
             width: 0,
         },
         zIndex: 10,
@@ -87,7 +87,7 @@ var styles = StyleSheet.create({
         backgroundColor: 'transparent',
         left: 15,
         position: 'absolute',
-        top: 20,
+        top: 18,
         height: 42,
         flexDirection: 'row',
         justifyContent: 'center',
@@ -98,12 +98,13 @@ var styles = StyleSheet.create({
         color: '#444',
         fontSize: 16,
         fontWeight: "500",
-        paddingTop: 30,
+        paddingTop: 32,
         fontFamily: constants.dinNextMedium,
     },
     viewContainer: {
         top: 0,
         flex: 1,
+        backgroundColor: '#FAFAFA',
     },
     loadingView: {
         flex: 1,
@@ -117,37 +118,54 @@ var styles = StyleSheet.create({
         color: constants.brandSubColor,
     },
     cardWrapper: {
-        backgroundColor: '#ff0010',
         flex: 1,
     },
     meta: {
         height: 50,
         alignItems: 'center',
         flex: 0,
-        justifyContent: 'flex-start',
+        justifyContent: 'center',
         zIndex: 2,
+        alignSelf: 'center',
     },
     metaText: {
         fontSize: 14,
-        color: constants.brandMainColor,
+        color: constants.brandSubColor,
         fontFamily: constants.dinNextMedium,
-        opacity: 0.5,
     },
     card: {
-        height: vheight - 20 - 45 - 50, // Statusbar - Navbar - Footer
-        width: vwidth,
-        backgroundColor: 'transparent',
+        height: vheight - 20 - 45 - 50 - 8, // Statusbar - Navbar - Footer - 8px offset from top
+        width: vwidth - 16,
+        top: 8,
+        backgroundColor: 'white',
+        borderRadius: 4,
         flexDirection: 'column',
+        alignSelf: 'center',
         borderWidth: 1,
         borderColor: 'transparent',
         zIndex: 1,
+        shadowColor: constants.brandMainColor,
+        shadowOpacity: 0.15,
+        shadowRadius: 3,
+        shadowOffset: {
+            height: 1,
+            width: 0,
+        },
+    },
+    cardsView: {
+        flex: 1,
+        alignItems: 'center',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        backgroundColor: 'transparent',
     },
     cardBack: {
         backgroundColor: 'transparent',
         alignSelf: 'stretch',
         borderColor: 'transparent',
         zIndex: 1,
-        width: vwidth,
+        width: vwidth - 16,
+        flex: 1,
     },
     viewDivider: {
         height: 1,
@@ -212,12 +230,13 @@ var styles = StyleSheet.create({
         padding:10, height:50, borderRadius:50, backgroundColor: 'white',
         shadowColor: constants.brandMainColor,
         shadowOpacity: 0.15,
-        shadowRadius: 10,
+
+        shadowRadius: 5,
         shadowOffset: {
             height: 4,
             width: 0,
         },
-        borderColor: '#F1F1F1',
+        borderColor: '#E0E0E0',
         borderWidth: 1,
         paddingTop: 16,
         width: vwidth - 120,
