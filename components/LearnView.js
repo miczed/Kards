@@ -11,7 +11,7 @@ import {
     ActivityIndicator,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
-
+import Cards from '../classes/Cards';
 const styles = require('../styles.js');
 const SwipeCards = require('../components/SwipeCards.js');
 const NavBar = require('../components/NavBar');
@@ -106,6 +106,7 @@ class LearnView extends Component {
             categoryKey: this.props.categoryKey,
             categoryName: this.props.categoryName,
             firebaseApp: this.props.firebaseApp,
+            cardsProvider: new Cards(this.props.firebaseApp),
         };
          this.cardsRef = this.getRef().child('cards').orderByChild("category").equalTo(this.state.categoryKey);
 
@@ -153,6 +154,12 @@ class LearnView extends Component {
     componentDidMount() {
         this.listenForCards(this.cardsRef);
     }
+    handleYup = (card) => {
+        this.state.cardsProvider.increaseCardProgress(card._key);
+    }
+    handleNope = (card) => {
+        this.state.cardsProvider.decreaseCardProgress(card._key);
+    }
     nextCard = (card) => {
         var newCount = this.state.actCard;
         if(newCount == this.state.cardCount) {
@@ -192,8 +199,8 @@ class LearnView extends Component {
                     cards={this.state.cards}
                     renderCard={(cardData) => <Card {...cardData} />}
                     loop={false}
-                    handleYup={this.nextCard}
-                    handleNope={this.nextCard}
+                    handleYup={this.handleYup}
+                    handleNope={this.handleNope}
                     noText={"NICHT GEWUSST"}
                     yupText={"GEWUSST"}
                     yupStyle={styles.yup}
