@@ -25,10 +25,10 @@ var styles = StyleSheet.create({
       fontFamily: constants.dinNextBold,
     },
     textRed: {
-        color: '#8FBB5D',
+        color: '#C4615E',
     },
     textGreen: {
-        color: '#C4615E',
+        color: '#8FBB5D',
     },
     navigator: {
         top: 0,
@@ -45,7 +45,16 @@ var styles = StyleSheet.create({
         borderColor: 'transparent',
         borderWidth: 1,
         paddingBottom: 9,
-        paddingTop: 12,
+        paddingHorizontal: 15,
+        flex: 1,
+        zIndex:1,
+    },
+    liWithStat: {
+        backgroundColor: '#fff',
+        borderBottomColor: '#E9E9E9',
+        borderColor: 'transparent',
+        borderWidth: 1,
+        paddingBottom: 0,
         paddingHorizontal: 15,
         flex: 1,
         zIndex:1,
@@ -55,16 +64,28 @@ var styles = StyleSheet.create({
     },
     liText: {
         color: constants.brandMainColor,
-        fontSize: 16,
-        fontFamily: constants.merriBold,
-        paddingBottom: 4,
+        fontSize: 18,
+        fontFamily: constants.dinNextRegular,
+        marginTop: 15,
+
     },
-    liSubText: {
-        color: constants.brandMainColor,
-        opacity: 0.5,
+    liStats: {
+        flexDirection: 'row',
+        marginBottom: 12,
+    },
+    liSubTextSpan: {
+        paddingTop: 4,
+        color: constants.brandSubColor,
+        opacity: 1,
         fontFamily: constants.dinNextMedium,
         fontSize: 14,
         marginRight: 15,
+    },
+    liGradient: {
+        height: 8,
+        flex: 1,
+        marginLeft: -15,
+        marginRight: -15,
     },
     navbar: {
         backgroundColor: '#fff',

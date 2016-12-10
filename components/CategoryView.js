@@ -17,7 +17,7 @@ const LearnView = require('../components/LearnView');
 const ListItem = require('../components/ListItem');
 const styles = require('../styles.js');
 const NavBar = require('../components/NavBar');
-
+import Categories from '../classes/Categories';
 
 class CategoryView extends Component {
 
@@ -30,10 +30,12 @@ class CategoryView extends Component {
             parentCategory: props.parentCategoryKey ? props.parentCategoryKey : "",
             viewTitle: props.parentCategoryName ? props.parentCategoryName : this.props.viewTitle,
             firebaseApp: this.props.firebaseApp,
+
             backBtn: this.props.backBtn ? this.props.backBtn : false
         };
         this.categoriesRef = this.getRef().child('categories').orderByChild("parent").equalTo(this.state.parentCategory);
         this.cardsRef = this.getRef().child('cards');
+        this.categoriesProvider = new Categories(this.props.firebaseApp);
     }
 
     getRef() {
@@ -41,22 +43,30 @@ class CategoryView extends Component {
     }
 
     listenForItems(categoriesRef) {
-        categoriesRef.on('value', (categorySnap) => {
-            // get children as an array
-            let items = [];
-            categorySnap.forEach((category) => {
-                items.push({
-                    title: category.val().title,
-                    _key: category.key,
-                    cardCount: (category.val().cards != null ? Object.keys(category.val().cards).length : 0),
+        this.categoriesProvider.getCategoriesByParent(this.state.parentCategory,(categories) => {
+            this.categoriesProvider.getProgress((progress) => {
+                // get children as an array
+                let items = [];
+                categories.forEach((category) => {
+                    let cardProgress = this.categoriesProvider.leftJoin(category.cards, progress);
+                    let progresses;
+                    if(cardProgress) {
+                        progresses = this.categoriesProvider.getCategoryProgressGroups(cardProgress);
+                    } else {
+                        progresses = null;
+                    }
+                    items.push({
+                        title: category.title,
+                        _key: category._key,
+                        cardCount: (category.cards != null ? Object.keys(category.cards).length : 0),
+                        progress: progresses,
+                    });
+                });
+                this.setState({
+                    categories: items,
+                    dataSource: this.state.dataSource.cloneWithRows(items)
                 });
             });
-
-            this.setState({
-                categories: items,
-                dataSource: this.state.dataSource.cloneWithRows(items)
-            });
-
         });
     }
 

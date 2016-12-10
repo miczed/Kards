@@ -176,8 +176,8 @@ class SwipeCards extends Component {
                            " " + (this.state.cardsKnown.length + this.state.cardsNotKnown.length)
                         } { ((this.state.cardsKnown.length + this.state.cardsNotKnown.length) > 1) ? 'Karten' : 'Karte' } </Text>
                     angesehen. Davon hast du
-                    <Text style={[styles.textRed, styles.textBold]}> { this.state.cardsKnown.length } gewusst </Text>
-                    und <Text style={[styles.textGreen, styles.textBold]}>{this.state.cardsNotKnown.length} nicht gewusst</Text>.
+                    <Text style={[styles.textGreen, styles.textBold]}> { this.state.cardsKnown.length } gewusst </Text>
+                    und <Text style={[styles.textRed, styles.textBold]}>{this.state.cardsNotKnown.length} nicht gewusst</Text>.
                 </Text>
                 <View style={styles.textDivider}></View>
                 <Text style={styles.noMoreCardsText}>Welche Karten möchtest du erneut abfragen?</Text>
