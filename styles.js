@@ -148,11 +148,22 @@ var styles = StyleSheet.create({
         justifyContent: 'center',
         zIndex: 2,
         alignSelf: 'center',
+        flexDirection: 'row',
+        width: vwidth,
     },
     metaText: {
         fontSize: 14,
         color: constants.brandSubColor,
         fontFamily: constants.dinNextMedium,
+        alignSelf: 'center',
+        paddingTop: 5,
+    },
+    metaButton: {
+        right: 20,
+        position: 'absolute',
+        height: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     card: {
         height: vheight - 20 - 45 - 50 - 8, // Statusbar - Navbar - Footer - 8px offset from top

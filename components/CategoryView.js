@@ -33,16 +33,11 @@ class CategoryView extends Component {
 
             backBtn: this.props.backBtn ? this.props.backBtn : false
         };
-        this.categoriesRef = this.getRef().child('categories').orderByChild("parent").equalTo(this.state.parentCategory);
-        this.cardsRef = this.getRef().child('cards');
+
         this.categoriesProvider = new Categories(this.props.firebaseApp);
     }
 
-    getRef() {
-        return this.state.firebaseApp.database().ref();
-    }
-
-    listenForItems(categoriesRef) {
+    listenForItems() {
         this.categoriesProvider.getCategoriesByParent(this.state.parentCategory,(categories) => {
             this.categoriesProvider.getProgress((progress) => {
                 // get children as an array
@@ -69,9 +64,8 @@ class CategoryView extends Component {
             });
         });
     }
-
     componentDidMount() {
-        this.listenForItems(this.categoriesRef);
+        this.listenForItems();
     }
     renderLoadingView() {
         return (

@@ -12,8 +12,10 @@ import {
     View,
     Animated,
     PanResponder,
-    Image
+    Image,
+    TouchableHighlight
 } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import clamp from 'clamp';
 import Emoji from 'react-native-emoji';
@@ -247,6 +249,9 @@ class SwipeCards extends Component {
                     this.state.card ? (
                         <View style={styles.meta}>
                             <Text style={styles.metaText}>{ this.props.cards.indexOf(this.state.card) + 1} von { this.props.cards.length } in {this.props.categoryName }</Text>
+                            <TouchableHighlight onPress={() => {this.props.handleFavorite(this.state.card);}} style={ styles.metaButton } underlayColor={'transparent'}>
+                                <View><Icon name="star-o" size={22} color="#969696"/></View>
+                            </TouchableHighlight>
                         </View>
                     ) : null
                 }

@@ -160,17 +160,8 @@ class LearnView extends Component {
     handleNope = (card) => {
         this.state.cardsProvider.decreaseCardProgress(card._key);
     }
-    nextCard = (card) => {
-        var newCount = this.state.actCard;
-        if(newCount == this.state.cardCount) {
-            newCount = 1;
-        } else {
-            newCount = newCount + 1;
-        }
-        this.setState({
-            actCard: newCount,
-            metaText: newCount + " von " + this.state.cardCount +" in "+this.state.categoryName
-        });
+    handleFavorite = (card) => {
+        this.state.cardsProvider.setCardFavorite(card._key,true);
     }
     /**
      * Resets the cards state and creates a new uid so that the SwipeCards implementation will change
@@ -201,6 +192,7 @@ class LearnView extends Component {
                     loop={false}
                     handleYup={this.handleYup}
                     handleNope={this.handleNope}
+                    handleFavorite={this.handleFavorite}
                     noText={"NICHT GEWUSST"}
                     yupText={"GEWUSST"}
                     yupStyle={styles.yup}
@@ -212,6 +204,7 @@ class LearnView extends Component {
                     categoryName={this.state.categoryName}
                     closeView={() => {this.props.navigator.pop();}}
                     uid={this.state.uid}
+
                 />
             </View>
         );

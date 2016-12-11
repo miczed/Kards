@@ -32,6 +32,15 @@ export default class Cards {
     }
 
     /**
+     * Returns the firebase reference to the favorites of a card
+     * @param cardKey : String key of the card
+     * @returns {*} reference to the firebase object
+     */
+    getCardFavoriteRef(cardKey) {
+        return this.firebaseApp.database().ref('favorites/' + cardKey);
+    }
+
+    /**
      * Gets all the cards that are in the specified key's category
      * @param catKey : String key of the category
      * @param callback : Function gets called when the promise is resolved
@@ -127,5 +136,14 @@ export default class Cards {
         let updates = {};
         updates['progress'] = 0;
         this.getCardProgressRef(cardKey).update(updates);
+    }
+
+    /**
+     * Sets the favorite boolean of the card
+     * @param cardKey : String key of the card
+     * @param bool : boolean the value that should be set
+     */
+    setCardFavorite(cardKey,bool = true) {
+        this.getCardFavoriteRef(cardKey).set({'favorite' : bool});
     }
 }
