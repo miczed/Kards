@@ -18,7 +18,6 @@ class ListItem extends Component {
         };
 
         if(this.props.item.progress && this.state.cardCount != 0) {
-            console.log(this.props.item.progress);
             this.state.learned = this.props.item.progress.learned ? Object.keys(this.props.item.progress.learned).length : 0;
             this.state.veryhard = this.props.item.progress.veryhard ? Object.keys(this.props.item.progress.veryhard).length : 0;
             this.state.hard = this.props.item.progress.hard ? Object.keys(this.props.item.progress.hard).length : 0;

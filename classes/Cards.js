@@ -40,12 +40,17 @@ export default class Cards {
         return this.firebaseApp.database().ref('favorites/' + cardKey);
     }
 
+    getFavoritesRef() {
+        return this.firebaseApp.database().ref('favorites');
+    }
+
     /**
      * Gets all the cards that are in the specified key's category
      * @param catKey : String key of the category
      * @param callback : Function gets called when the promise is resolved
+     * @param asArray : boolean whether the values should be returned as an array or not
      */
-    getCardsByCategory(catKey,callback) {
+    getCardsByCategory(catKey,callback,asArray = true) {
         this.getCardsRef().orderByChild('category').equalTo(catKey).once('value').then(function(snapshot) {
             let items = [];
             if(snapshot.val()) {
@@ -57,7 +62,12 @@ export default class Cards {
                     return obj;
                 });
             }
-            callback(items);
+            if(asArray) {
+                callback(items);
+            } else {
+                callback(snapshot.val());
+            }
+
         });
     }
     /**
@@ -129,6 +139,23 @@ export default class Cards {
     }
 
     /**
+     * Helper function that merges two firebase objects the attributes are only merged if both objects contain the same keys
+     * @param first : object into which the data should be merged
+     * @param second : object from which the data should be taken
+     * @returns {*} merged object
+     */
+    leftJoin(first,second) {
+        for (let key in first) {
+            if (first.hasOwnProperty(key)) {
+                if(second[key]) {
+                    Object.assign(first[key],second[key]);
+                }
+            }
+        }
+        return first;
+    }
+
+    /**
      * Resets the progress of a card to zero
      * @param cardKey : String key of the card
      */
@@ -146,4 +173,36 @@ export default class Cards {
     setCardFavorite(cardKey,bool = true) {
         this.getCardFavoriteRef(cardKey).set({'favorite' : bool});
     }
+
+    /**
+     * Gets all the favorite cards
+     * @param callback : Function that gets called when the promise is resolved
+     */
+    getFavorites(callback) {
+        this.getFavoritesRef().once('value',(favorites) => {
+            callback(favorites.val());
+        });
+    }
+
+    getCardsWithFavorites(catKey,callback) {
+        this.getCardsByCategory(catKey,(cards) => {
+            this.getFavorites((favorites) => {
+
+                callback(this.toArray(this.leftJoin(cards,favorites)));
+            });
+        },false)
+    }
+
+    toArray(data) {
+        let items = [];
+        if(data) {
+            items = Object.keys(data).map((key) => {
+                let obj = data[key];
+                obj._key = key;
+                return obj;
+            });
+        }
+        return items;
+    }
+
 }

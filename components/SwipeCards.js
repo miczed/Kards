@@ -21,7 +21,7 @@ import clamp from 'clamp';
 import Emoji from 'react-native-emoji';
 import Button from 'react-native-button';
 const styles = require('../styles.js');
-
+import AnimatedIcon from '../components/AnimatedIcon';
 import Defaults from './Defaults.js';
 
 var SWIPE_THRESHOLD = 120;
@@ -80,6 +80,10 @@ class SwipeCards extends Component {
             cardsNotKnown: [],
         });
         this.props.resetCards(this.state.cardsNotKnown);
+    }
+    handleFavorite = (card) =>  {
+        this.state.card.favorite = !this.state.card.favorite;
+        this.props.handleFavorite(this.state.card)
     }
     componentDidMount() {
         this._animateEntrance();
@@ -213,7 +217,6 @@ class SwipeCards extends Component {
     renderCard(cardData) {
         return this.props.renderCard(cardData)
     }
-
     render() {
         let { pan, enter, } = this.state;
 
@@ -249,9 +252,7 @@ class SwipeCards extends Component {
                     this.state.card ? (
                         <View style={styles.meta}>
                             <Text style={styles.metaText}>{ this.props.cards.indexOf(this.state.card) + 1} von { this.props.cards.length } in {this.props.categoryName }</Text>
-                            <TouchableHighlight onPress={() => {this.props.handleFavorite(this.state.card);}} style={ styles.metaButton } underlayColor={'transparent'}>
-                                <View><Icon name="star-o" size={22} color="#969696"/></View>
-                            </TouchableHighlight>
+                             <AnimatedIcon pressHandler={this.handleFavorite} size={22} colorOn="#FFE42C" colorOff="#969696" active={this.state.card.favorite} style={styles.metaButton}></AnimatedIcon>
                         </View>
                     ) : null
                 }

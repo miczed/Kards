@@ -170,7 +170,7 @@ var styles = StyleSheet.create({
         width: vwidth - 16,
         top: 8,
         backgroundColor: 'white',
-        borderRadius: 4,
+        borderRadius: 6,
         flexDirection: 'column',
         alignSelf: 'center',
         borderWidth: 1,

@@ -134,7 +134,14 @@ class LearnView extends Component {
         return this.state.firebaseApp.database().ref();
     }
     listenForCards(cardsRef) {
-        cardsRef.on('value', (cardSnap) => {
+        this.state.cardsProvider.getCardsWithFavorites(this.state.categoryKey,(cardsWithFavorites) => {
+           this.shuffle(cardsWithFavorites);
+           this.setState({
+               cards: cardsWithFavorites,
+               uid: generateUID(),
+           })
+        });
+        /*cardsRef.once('value', (cardSnap) => {
             // get children as an array
             let items = [];
             cardSnap.forEach((card) => {
@@ -149,7 +156,7 @@ class LearnView extends Component {
                 cards: items,
                 uid: generateUID(),
             });
-        });
+        });*/
     }
     componentDidMount() {
         this.listenForCards(this.cardsRef);
@@ -161,7 +168,9 @@ class LearnView extends Component {
         this.state.cardsProvider.decreaseCardProgress(card._key);
     }
     handleFavorite = (card) => {
-        this.state.cardsProvider.setCardFavorite(card._key,true);
+        const index = this.state.cards.findIndex(x => x._key === card._key);
+        this.state.cards[index].favorite = card.favorite;
+        this.state.cardsProvider.setCardFavorite(card._key,card.favorite);
     }
     /**
      * Resets the cards state and creates a new uid so that the SwipeCards implementation will change
