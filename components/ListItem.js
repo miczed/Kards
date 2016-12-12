@@ -33,27 +33,34 @@ class ListItem extends Component {
     }
     render() {
         return (
-            <TouchableHighlight onPress={this.props.onPress}>
+            <TouchableHighlight onPress={this.props.onPress} underlayColor={ this.props.item.progress ? "transparent" : "#B9B9B9"}>
                 <View style={ this.props.item.progress ? styles.liWithStat : styles.li }>
                     <Text style={styles.liText}>{this.props.item.title}</Text>
-                    { this.state.cardCount > 0 ? (<View style={styles.liStats}>
-                        <Text  style={styles.liSubTextSpan}>{this.state.cardCount} Karten</Text>
-                        { this.props.item.progress ? <Text style={[styles.liSubTextSpan,styles.textGreen]}>{ this.state.learned } gelernt</Text> : null }
-                        { this.props.item.progress ? <Text style={[styles.liSubTextSpan,styles.textRed]}>{ this.state.veryhard } Knacknüsse</Text> : null }
-                    </View>) : null }
+                    { this.state.cardCount > 0 ? (
+                        <View style={styles.liStats}>
+                            <View style={styles.liStatsRow}>
+                                <Text  style={styles.liSubTextSpan}>{this.state.cardCount} Karten</Text>
+                                <Text style={[styles.liSubTextSpan,styles.textLightGrey]}>{ this.state.unviewed } offen</Text>
+                            </View>
+                            <View style={styles.liStatsRow}>
+                                <Text style={[styles.liSubTextSpan,styles.textGreen]}>{ this.state.learned } gelernt</Text>
+                                <Text style={[styles.liSubTextSpan,styles.textLightGreen]}>{ this.state.normal } richtig</Text>
+                            </View>
+                            <View style={styles.liStatsRow}>
+                                <Text style={[styles.liSubTextSpan,styles.textRed]}>{ this.state.veryhard } Knacknüsse</Text>
+                                <Text style={[styles.liSubTextSpan,styles.textLightRed]}>{ this.state.hard } unsicher</Text>
+                            </View>
+                        </View>
+                    ) : null }
                     { this.props.item.progress ? (
-                        <LinearGradient
-                            start={[0.0, 0.0]} end={[1.0, 0.0]}
-                            locations={[
-                                0,
-                                this.state.veryhard,
-                                this.state.veryhard + this.state.hard,
-                                this.state.veryhard + this.state.hard + this.state.normal,
-                                this.state.veryhard + this.state.hard + this.state.normal + this.state.learned,
-                            ]}
-                            colors={['#C4615E','#E98686', '#B8E986', '#8FBB5D','#FFFFFF']}
-                            style={styles.liGradient}>
-                        </LinearGradient>
+                        <View style={styles.liStatsBar}>
+                            <View style={[styles.liStatsProgress,{ 'flex' : this.state.veryhardPercent, 'backgroundColor': '#C6605C' }]}></View>
+                            <View style={[styles.liStatsProgress,{ 'flex' : this.state.hardPercent, 'backgroundColor': '#E98686' }]}></View>
+                            <View style={[styles.liStatsProgress,{ 'flex' : this.state.normalPercent, 'backgroundColor': '#ACE671' }]}></View>
+                            <View style={[styles.liStatsProgress,{ 'flex' : this.state.learnedPercent, 'backgroundColor': '#7BB43E' }]}></View>
+                            <View style={[styles.liStatsProgress,{ 'flex' : this.state.unviewedPercent, 'backgroundColor': '#B9B9B9' }]}></View>
+                        </View>
+
                     ) : null}
 
 

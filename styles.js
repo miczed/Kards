@@ -25,10 +25,19 @@ var styles = StyleSheet.create({
       fontFamily: constants.dinNextBold,
     },
     textRed: {
-        color: '#C4615E',
+        color: '#C6605C',
     },
     textGreen: {
-        color: '#8FBB5D',
+        color: '#7BB43E',
+    },
+    textLightRed: {
+        color: '#E98686',
+    },
+    textLightGreen: {
+        color: '#B7EB81',
+    },
+    textLightGrey: {
+        color: '#B9B9B9',
     },
     navigator: {
         top: 0,
@@ -51,12 +60,16 @@ var styles = StyleSheet.create({
     },
     liWithStat: {
         backgroundColor: '#fff',
-        borderBottomColor: '#E9E9E9',
-        borderColor: 'transparent',
+        borderColor: '#E9E9E9',
+        borderRadius: 6,
+        overflow: 'hidden',
         borderWidth: 1,
         paddingBottom: 0,
         paddingHorizontal: 15,
         flex: 1,
+        marginTop: 8,
+        marginLeft: 8,
+        marginRight: 8,
         zIndex:1,
     },
     liContainer: {
@@ -71,15 +84,28 @@ var styles = StyleSheet.create({
     },
     liStats: {
         flexDirection: 'row',
-        marginBottom: 12,
+        marginTop: 5,
+        marginBottom: 8,
+    },
+    liStatsRows: {
+        flexDirection: 'row',
+    },
+    liStatsBar: {
+        marginLeft: -15,
+        marginRight: -15,
+        flexDirection: 'row',
+    },
+    liStatsProgress: {
+        height: 8,
     },
     liSubTextSpan: {
-        paddingTop: 4,
+        paddingTop: 2,
         color: constants.brandSubColor,
         opacity: 1,
         fontFamily: constants.dinNextMedium,
         fontSize: 14,
-        marginRight: 15,
+        marginRight: 0,
+        width: 90,
     },
     liGradient: {
         height: 8,
@@ -89,19 +115,13 @@ var styles = StyleSheet.create({
     },
     navbar: {
         backgroundColor: '#fff',
-        borderBottomColor: '#eee',
+        borderBottomColor: '#E0E0E0',
         borderColor: 'transparent',
         borderWidth: 1,
         justifyContent: 'center',
         height: 65,
         flexDirection: 'row',
         shadowColor: constants.brandMainColor,
-        shadowOpacity: 0.15,
-        shadowRadius: 1,
-        shadowOffset: {
-            height: 0,
-            width: 0,
-        },
         zIndex: 10,
     },
     navbarButton: {
@@ -116,7 +136,7 @@ var styles = StyleSheet.create({
 
     },
     navbarTitle: {
-        color: '#444',
+        color: constants.brandSubColor,
         fontSize: 16,
         fontWeight: "500",
         paddingTop: 32,
@@ -176,9 +196,9 @@ var styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: 'transparent',
         zIndex: 1,
-        shadowColor: constants.brandMainColor,
+        shadowColor: '#000000',
         shadowOpacity: 0.15,
-        shadowRadius: 3,
+        shadowRadius: 2,
         shadowOffset: {
             height: 1,
             width: 0,
