@@ -105,7 +105,7 @@ var styles = StyleSheet.create({
         fontFamily: constants.dinNextMedium,
         fontSize: 14,
         marginRight: 0,
-        width: 90,
+        minWidth: 90,
     },
     liGradient: {
         height: 8,

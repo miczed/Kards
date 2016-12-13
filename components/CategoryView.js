@@ -11,6 +11,7 @@ import {
     NavigatorIOS,
     StatusBar,
     ActivityIndicator,
+    ActionSheetIOS,
 } from 'react-native';
 
 const LearnView = require('../components/LearnView');
@@ -107,13 +108,44 @@ class CategoryView extends Component {
                     backButtonTitle: ''
                 });
             } else { // category has cards
-                this.props.navigator.push({
-                    title: item.title,
-                    component: LearnView,
-                    passProps: {categoryKey: item._key, categoryName: item.title, firebaseApp: this.state.firebaseApp, viewTitle: item.title},
-                    navigationBarHidden:  true,
-                    backButtonTitle: ''
-                });
+                let progressGroups = ["all"];
+                let buttons = [
+                    'Alle',
+                ];
+                if(item.progress.counts.unviewed > 0) {
+                    progressGroups.push("unviewed");
+                    buttons.push("Noch nicht angesehen")
+                }
+                if((item.progress.counts.veryhard + item.progress.counts.hard) > 0) {
+                    progressGroups.push("unknown");
+                    buttons.push("Nicht gekonnte")
+                }
+                buttons.push("Abbrechen");
+                const CANCEL_INDEX = progressGroups.length;
+
+                ActionSheetIOS.showActionSheetWithOptions({
+                        options: buttons,
+                        cancelButtonIndex: CANCEL_INDEX,
+                        tintColor: '#2D2D2D',
+                        message: "Welche Karten möchtest du lernen?"
+                    },
+                    (buttonIndex) => {
+                        if(progressGroups[buttonIndex]) {
+                            this.props.navigator.push({
+                                title: item.title,
+                                component: LearnView,
+                                passProps: {
+                                    categoryKey: item._key,
+                                    categoryName: item.title,
+                                    firebaseApp: this.state.firebaseApp,
+                                    viewTitle: item.title,
+                                    progressGroup: progressGroups[buttonIndex]
+                                },
+                                navigationBarHidden: true,
+                                backButtonTitle: ''
+                            });
+                        }
+                    });
             }
 
         };

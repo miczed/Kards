@@ -125,7 +125,7 @@ export default class Categories {
     leftJoin(first,second) {
         for (let key in first) {
             if (first.hasOwnProperty(key)) {
-                if(second[key]) {
+                if(typeof second[key] !== 'undefined' || second[key] !== null) {
                     Object.assign(first[key],second[key]);
                 }
             }
@@ -186,23 +186,29 @@ export default class Categories {
             let normal = {};
             let learned = {};
             let unviewed = {};
+            let counts = { 'veryhard': 0, 'hard': 0, 'normal': 0, 'learned':0, 'unviewed': 0};
             Object.keys(progress).forEach(function(key) {
                 let val = progress[key];
                 if (progress.hasOwnProperty(key)) {
                     if (val.progress <= -2) {
                         veryhard[key] = val;
+                        counts.veryhard++;
                     } else if (val.progress == -1) {
-                        hard[key] = val
+                        hard[key] = val;
+                        counts.hard++;
                     } else if (val.progress >= 2) {
-                        learned[key] = val
+                        learned[key] = val;
+                        counts.learned++;
                     } else if (val.progress == 1) {
-                        normal[key] = val
+                        normal[key] = val;
+                        counts.normal++;
                     } else { // Progress is not set or zero
-                        unviewed[key] = val
+                        unviewed[key] = val;
+                        counts.unviewed++;
                     }
                 }
             });
-            return {'veryhard': veryhard, 'hard': hard, 'normal': normal, 'learned': learned, 'unviewed': unviewed};
+            return {'veryhard': veryhard, 'hard': hard, 'normal': normal, 'learned': learned, 'unviewed': unviewed, 'counts': counts};
         } else {
             return null;
         }

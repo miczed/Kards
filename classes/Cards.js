@@ -32,6 +32,14 @@ export default class Cards {
     }
 
     /**
+     * Returns the firebase reference to the progress
+     * @returns {*} reference to the firebase object
+     */
+    getProgressRef() {
+        return this.firebaseApp.database().ref('progress');
+    }
+
+    /**
      * Returns the firebase reference to the favorites of a card
      * @param cardKey : String key of the card
      * @returns {*} reference to the firebase object
@@ -156,6 +164,42 @@ export default class Cards {
     }
 
     /**
+     * Helper function that excludes one set from another
+     * @param first : object from which the matching data should be removed
+     * @param second : object which should be excluded
+     * @returns {*} merged object
+     */
+    exclude(first,second) {
+        for (let key in first) {
+            if (first.hasOwnProperty(key)) {
+                if(second[key]) {
+                    delete first[key];
+                }
+            }
+        }
+        return first;
+    }
+    /**
+     * Helper function that merges two firebase objects if the attributes are in both objects
+     * @param first : object into which the data should be merged
+     * @param second : object from which the data should be taken
+     * @returns {*} merged object
+     */
+    join(first,second) {
+        for (let key in first) {
+            if (first.hasOwnProperty(key)) {
+                if(typeof second[key] === 'undefined' || second[key] === null) {
+                    delete first[key];
+                } else {
+                    Object.assign(first[key],second[key]);
+                }
+            }
+        }
+        return first;
+    }
+
+
+    /**
      * Resets the progress of a card to zero
      * @param cardKey : String key of the card
      */
@@ -184,13 +228,98 @@ export default class Cards {
         });
     }
 
+    /**
+     * Returns the progress for all cards
+     * @param callback : Function that gets called when the promise is resolved
+     */
+    getProgress(callback) {
+        let progressRef = this.getProgressRef();
+        progressRef.once("value", (progressSnap) => {
+            if(progressSnap.val()) {
+                callback(progressSnap.val());
+            } else {
+                callback(null);
+            }
+        });
+    }
+
+    getProgressByGroup(progressGroup,callback) {
+        let ref = this.getProgressRef().orderByChild("progress");
+        if(progressGroup == "veryhard") {
+            ref = ref.endAt(-2);
+        } else if(progressGroup == "hard") {
+            ref = ref.equalTo(-1);
+        } else if(progressGroup == "normal") {
+            ref = ref.startAt(0).endAt(1);
+        } else if(progressGroup == "learned") {
+            ref = ref.startAt(2);
+        } else {
+            throw "progressGroup either not set or not valid";
+        }
+        ref.once("value", (progressSnap) => {
+            if(progressSnap.val()) {
+                callback(progressSnap.val());
+            } else {
+                callback(null);
+            }
+        });
+    }
+
     getCardsWithFavorites(catKey,callback) {
         this.getCardsByCategory(catKey,(cards) => {
             this.getFavorites((favorites) => {
-
-                callback(this.toArray(this.leftJoin(cards,favorites)));
+                this.getProgress((progress) => {
+                   callback(this.toArray(this.leftJoin(this.leftJoin(cards,favorites),progress)));
+                });
             });
         },false)
+    }
+
+    groupCardsByProgress(cards) {
+        if(cards) {
+            let veryhard = [];
+            let hard = [];
+            let normal = [];
+            let learned = [];
+            let unviewed = [];
+            for(let i=0; i < cards.length; i++) {
+                let val = cards[i];
+                if (val.progress <= -2) {
+                    veryhard.push(val);
+                } else if (val.progress == -1) {
+                    hard.push(val);
+                } else if (val.progress >= 2) {
+                    learned.push(val);
+                } else if (val.progress == 1) {
+                    normal.push(val);
+                } else { // Progress is not set or zero
+                    unviewed.push(val);
+                }
+            }
+            return {'veryhard': veryhard, 'hard': hard, 'normal': normal, 'learned': learned, 'unviewed': unviewed};
+        } else {
+            return null;
+        }
+    }
+
+    getCardsByProgress(catKey,progressGroup,callback) {
+        if (progressGroup != "unviewed") {
+            this.getCardsByCategory(catKey, (cards) => {
+                this.getProgressByGroup(progressGroup,(progress) => {
+                    this.getFavorites((favorites) => {
+                        callback(this.toArray(this.leftJoin(this.join(cards, progress), favorites)));
+                    });
+                });
+            }, false);
+        } else {
+            this.getCardsByCategory(catKey, (cards) => {
+                this.getProgress((progress) => {
+                    this.getFavorites((favorites) => {
+                        callback(this.toArray(this.leftJoin(this.exclude(cards, progress), favorites)));
+                    });
+                });
+            }, false);
+        }
     }
 
     toArray(data) {

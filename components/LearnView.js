@@ -133,33 +133,30 @@ class LearnView extends Component {
     getRef() {
         return this.state.firebaseApp.database().ref();
     }
-    listenForCards(cardsRef) {
+    listenForCards() {
         this.state.cardsProvider.getCardsWithFavorites(this.state.categoryKey,(cardsWithFavorites) => {
-           this.shuffle(cardsWithFavorites);
-           this.setState({
-               cards: cardsWithFavorites,
-               uid: generateUID(),
-           })
+            this.shuffle(cardsWithFavorites);
+            let groupedCards = this.state.cardsProvider.groupCardsByProgress(cardsWithFavorites);
+            if(this.props.progressGroup == "unknown") {
+                this.setState({
+                    cards: groupedCards.veryhard.concat(groupedCards.hard),
+                    uid: generateUID(),
+                })
+            } else if(this.props.progressGroup == "unviewed") {
+                this.setState({
+                    cards: groupedCards.unviewed,
+                    uid: generateUID(),
+                })
+            } else { // All
+                this.setState({
+                    cards: cardsWithFavorites,
+                    uid: generateUID(),
+                })
+            }
         });
-        /*cardsRef.once('value', (cardSnap) => {
-            // get children as an array
-            let items = [];
-            cardSnap.forEach((card) => {
-                items.push({
-                    front_html: card.val().front_html,
-                    back_html: card.val().back_html,
-                    _key: card.key
-                });
-            });
-            this.shuffle(items); // we shuffle the array so card order is randomized
-            this.setState({
-                cards: items,
-                uid: generateUID(),
-            });
-        });*/
     }
     componentDidMount() {
-        this.listenForCards(this.cardsRef);
+        this.listenForCards();
     }
     handleYup = (card) => {
         this.state.cardsProvider.increaseCardProgress(card._key);

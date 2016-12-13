@@ -35,7 +35,7 @@ class SwipeCards extends Component {
         super(props);
         this.state = {
             pan: new Animated.ValueXY(),
-            enter: new Animated.Value(0.5),
+            enter: new Animated.Value(0.75),
             card: this.props.cards ? this.props.cards[0] : null,
             cardsKnown: [],
             cardsNotKnown: [],
