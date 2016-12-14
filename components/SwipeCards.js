@@ -94,6 +94,7 @@ class SwipeCards extends Component {
             this.state.enter,
             { toValue: 1, friction: 8 }
         ).start();
+
     }
     componentWillReceiveProps(nextProps){
         // if parent component set a new uid then cards are overwritten
@@ -166,6 +167,7 @@ class SwipeCards extends Component {
         this.state.enter.setValue(0);
         this._goToNextCard();
         this._animateEntrance();
+
     }
 
     renderNoMoreCards() {
@@ -218,8 +220,7 @@ class SwipeCards extends Component {
         return this.props.renderCard(cardData)
     }
     render() {
-        let { pan, enter, } = this.state;
-
+        let { pan, enter } = this.state;
         let [translateX, translateY] = [pan.x, pan.y];
 
         let rotate = pan.x.interpolate({inputRange: [-200, 0, 200], outputRange: ["-30deg", "0deg", "30deg"]});
@@ -229,13 +230,16 @@ class SwipeCards extends Component {
         let animatedCardstyles = {transform: [{translateX}, {translateY}, {scale}], opacity};
 
         let yupOpacity = pan.x.interpolate({inputRange: [0, 150], outputRange: [0, 1]});
-        let yupTranslateY = pan.x.interpolate({inputRange: [0,150],outputRange: [0, -50], extrapolate: 'clamp'});
+        let yupTranslateY = pan.x.interpolate({inputRange: [0,150],outputRange: [0, -75], extrapolate: 'clamp'});
 
-        let animatedYupStyles = {transform: [{translateY: yupTranslateY}], opacity: yupOpacity}
+        let animatedYupStyles = {transform: [{translateY: yupTranslateY}], opacity: yupOpacity};
 
         let nopeOpacity = pan.x.interpolate({inputRange: [-150, 0], outputRange: [1, 0]});
-        let nopeTranslateY = pan.x.interpolate({inputRange: [-150,0],outputRange: [-50, 0], extrapolate: 'clamp'});
-        let animatedNopeStyles = {transform: [{translateY: nopeTranslateY}], opacity: nopeOpacity}
+        let nopeTranslateY = pan.x.interpolate({inputRange: [-150,0],outputRange: [-75, 0], extrapolate: 'clamp'});
+        let animatedNopeStyles = {transform: [{translateY: nopeTranslateY}], opacity:  nopeOpacity};
+
+        let metaOpacity = pan.x.interpolate({inputRange: [-150, 0, 150], outputRange: [0, 1, 0]});
+        let animatedMetaStyles = {opacity: metaOpacity};
 
         return (
             <View style={[this.props.containerStyle, styles.cardsView]}>
@@ -250,10 +254,10 @@ class SwipeCards extends Component {
 
                 {
                     this.state.card ? (
-                        <View style={styles.meta}>
+                        <Animated.View style={[styles.meta, animatedMetaStyles]}>
                             <Text style={styles.metaText}>{ this.props.cards.indexOf(this.state.card) + 1} von { this.props.cards.length } in {this.props.categoryName }</Text>
                              <AnimatedIcon pressHandler={this.handleFavorite} size={22} colorOn="#FFE42C" colorOff="#969696" active={this.state.card.favorite} style={styles.metaButton}></AnimatedIcon>
-                        </View>
+                        </Animated.View>
                     ) : null
                 }
 

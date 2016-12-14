@@ -5,7 +5,7 @@ import React, {Component} from 'react';
 import ReactNative from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
-const styles = require('../styles.js')
+const styles = require('../styles.js');
 const { View, TouchableHighlight, Text } = ReactNative;
 
 class ListItem extends Component {
@@ -35,7 +35,9 @@ class ListItem extends Component {
         return (
             <TouchableHighlight onPress={this.props.onPress} underlayColor={ this.props.item.progress ? "transparent" : "#B9B9B9"}>
                 <View style={ this.props.item.progress ? styles.liWithStat : styles.li }>
-                    <Text style={styles.liText}>{this.props.item.title}</Text>
+                    <View style={this.props.item.progress ? styles.liHeaderWithStat : styles.liHeader }>
+                        <Text style={styles.liText}>{this.props.item.title}</Text>
+                    </View>
                     { this.state.cardCount > 0 ? (
                         <View style={styles.liStats}>
                             <View style={styles.liStatsRow}>
@@ -54,11 +56,11 @@ class ListItem extends Component {
                     ) : null }
                     { this.props.item.progress ? (
                         <View style={styles.liStatsBar}>
-                            <View style={[styles.liStatsProgress,{ 'flex' : this.state.veryhardPercent, 'backgroundColor': '#C6605C' }]}></View>
-                            <View style={[styles.liStatsProgress,{ 'flex' : this.state.hardPercent, 'backgroundColor': '#E98686' }]}></View>
-                            <View style={[styles.liStatsProgress,{ 'flex' : this.state.normalPercent, 'backgroundColor': '#ACE671' }]}></View>
-                            <View style={[styles.liStatsProgress,{ 'flex' : this.state.learnedPercent, 'backgroundColor': '#7BB43E' }]}></View>
-                            <View style={[styles.liStatsProgress,{ 'flex' : this.state.unviewedPercent, 'backgroundColor': '#B9B9B9' }]}></View>
+                            <View style={[styles.liStatsProgress,{ 'flex' : this.state.veryhardPercent, 'backgroundColor': '#FF4B4B' }]}></View>
+                            <View style={[styles.liStatsProgress,{ 'flex' : this.state.hardPercent, 'backgroundColor': '#FF9393' }]}></View>
+                            <View style={[styles.liStatsProgress,{ 'flex' : this.state.normalPercent, 'backgroundColor': '#9CDB81' }]}></View>
+                            <View style={[styles.liStatsProgress,{ 'flex' : this.state.learnedPercent, 'backgroundColor': '#72CC4B' }]}></View>
+                            <View style={[styles.liStatsProgress,{ 'flex' : this.state.unviewedPercent, 'backgroundColor': '#D6D6D6' }]}></View>
                         </View>
 
                     ) : null}

@@ -4,6 +4,11 @@ const constants = {
     actionColor: '#24CE84',
     brandMainColor: '#2D2D2D',
     brandSubColor: '#969696',
+    red: '#FF4B4B',
+    lightRed: '#FF9393',
+    green: '#72CC4B',
+    lightGreen: '#9CDB81',
+    lightGrey: '#D6D6D6',
     dinNextMedium: 'DINNextRoundedLTPro-Medium',
     dinNextBold: 'DINNextRoundedLTPro-Bold',
     dinNextRegular: 'DINNextRoundedLTPro-Regular',
@@ -11,6 +16,11 @@ const constants = {
     merriRegular: 'Merriweather-Regular',
     merriItalic: 'Merriweather-Italic',
     merriBoldItalic: 'MerriWeather-BoldItalic',
+    sspBold: 'SourceSansPro-Bold',
+    sspBoldItalic: 'SourceSansPro-BoldItalic',
+    sspItalic: 'SourceSansPro-Italic',
+    sspRegular: 'SourceSansPro-Regular',
+    sspSemibold: 'SourceSansPro-Semibold',
 };
 var dimensions = Dimensions.get('window');
 var vheight = dimensions.height;
@@ -25,16 +35,16 @@ var styles = StyleSheet.create({
       fontFamily: constants.dinNextBold,
     },
     textRed: {
-        color: '#C6605C',
+        color: constants.red,
     },
     textGreen: {
-        color: '#7BB43E',
+        color: constants.green,
     },
     textLightRed: {
-        color: '#E98686',
+        color: constants.lightRed,
     },
     textLightGreen: {
-        color: '#B7EB81',
+        color: constants.lightGreen,
     },
     textLightGrey: {
         color: '#B9B9B9',
@@ -60,43 +70,72 @@ var styles = StyleSheet.create({
     },
     liWithStat: {
         backgroundColor: '#fff',
-        borderColor: '#E9E9E9',
         borderRadius: 6,
         overflow: 'hidden',
         borderWidth: 1,
+        borderColor: '#E9E9E9',
         paddingBottom: 0,
-        paddingHorizontal: 15,
+        paddingHorizontal: 0,
         flex: 1,
-        marginTop: 8,
-        marginLeft: 8,
-        marginRight: 8,
+        marginTop: 10,
+        marginLeft: 10,
+        marginRight: 10,
         zIndex:1,
     },
     liContainer: {
         flex: 2,
     },
+    liHeader: {
+        shadowColor: constants.brandMainColor,
+        paddingHorizontal: 5,
+        paddingTop: 20,
+        paddingBottom: 6,
+        borderBottomWidth: 0,
+    },
+    liHeaderWithStat: {
+        shadowColor: constants.brandMainColor,
+        paddingHorizontal: 20,
+        paddingTop: 20,
+        paddingBottom: 15,
+        shadowOpacity: 0.05,
+        borderBottomColor: '#E9E9E9',
+        borderBottomWidth: 1,
+        zIndex: 5,
+        shadowRadius: 3,
+        shadowOffset: {
+            height: 2,
+            width: 0,
+        },
+    },
     liText: {
         color: constants.brandMainColor,
         fontSize: 18,
         fontFamily: constants.dinNextRegular,
-        marginTop: 15,
-
     },
     liStats: {
         flexDirection: 'row',
-        marginTop: 5,
-        marginBottom: 8,
+        shadowOpacity: 0.15,
+        paddingHorizontal: 20,
+        paddingTop: 15,
+        paddingBottom: 12,
+        zIndex: 3,
+        shadowRadius: 4,
+        shadowOffset: {
+            height: 2,
+            width: 0,
+        },
+
     },
     liStatsRows: {
         flexDirection: 'row',
+
     },
     liStatsBar: {
-        marginLeft: -15,
-        marginRight: -15,
         flexDirection: 'row',
+        zIndex: 0,
     },
     liStatsProgress: {
-        height: 8,
+        height: 10,
     },
     liSubTextSpan: {
         paddingTop: 2,
@@ -136,7 +175,7 @@ var styles = StyleSheet.create({
 
     },
     navbarTitle: {
-        color: constants.brandSubColor,
+        color: constants.brandMainColor,
         fontSize: 16,
         fontWeight: "500",
         paddingTop: 32,
@@ -186,9 +225,9 @@ var styles = StyleSheet.create({
         alignItems: 'center',
     },
     card: {
-        height: vheight - 20 - 45 - 50 - 8, // Statusbar - Navbar - Footer - 8px offset from top
-        width: vwidth - 16,
-        top: 8,
+        height: vheight - 20 - 45 - 50 - 10, // Statusbar - Navbar - Footer - 8px offset from top
+        width: vwidth - 20,
+        top: 10,
         backgroundColor: 'white',
         borderRadius: 6,
         flexDirection: 'column',
@@ -228,15 +267,22 @@ var styles = StyleSheet.create({
         marginBottom: 15,
     },
     yup: {
-        backgroundColor: '#B8E986',
+        backgroundColor: constants.green,
         position: 'absolute',
         bottom: -50,
-        right: 0,
+        right: 100,
         height: 50,
-        left: 0,
+        borderRadius: 50,
+        left: 100,
         alignItems: 'center',
         paddingTop: 18,
         zIndex: 100,
+        shadowOpacity: 0.15,
+        shadowRadius: 22,
+        shadowOffset: {
+            height: 0,
+            width: 0,
+        },
     },
     yupText: {
         color: 'white',
@@ -244,15 +290,23 @@ var styles = StyleSheet.create({
         fontSize: 16,
     },
     nope: {
-        backgroundColor: '#E98686',
+        backgroundColor: constants.red,
         position: 'absolute',
         bottom: -50,
-        right: 0,
+        right: 100,
         height: 50,
-        left: 0,
+        left: 100,
+        borderRadius: 50,
         alignItems: 'center',
         paddingTop: 18,
         zIndex: 100,
+        shadowColor: '#000000',
+        shadowOpacity: 0.15,
+        shadowRadius: 22,
+        shadowOffset: {
+            height: 0,
+            width: 0,
+        },
     },
     nopeText: {
         color: 'white',

@@ -21,7 +21,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>13</string>
+	<string>14</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -39,6 +39,11 @@
 	<string></string>
 	<key>UIAppFonts</key>
 	<array>
+		<string>SourceSansPro-Semibold.ttf</string>
+		<string>SourceSansPro-Regular.ttf</string>
+		<string>SourceSansPro-It.ttf</string>
+		<string>SourceSansPro-BoldIt.ttf</string>
+		<string>SourceSansPro-Bold.ttf</string>
 		<string>DINNextRoundedLTPro-Regular.ttf</string>
 		<string>Merriweather-Italic.ttf</string>
 		<string>Merriweather-Regular.ttf</string>
