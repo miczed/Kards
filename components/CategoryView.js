@@ -12,6 +12,7 @@ import {
     StatusBar,
     ActivityIndicator,
     ActionSheetIOS,
+    RefreshControl,
 } from 'react-native';
 
 const LearnView = require('../components/LearnView');
@@ -31,12 +32,19 @@ class CategoryView extends Component {
             parentCategory: props.parentCategoryKey ? props.parentCategoryKey : "",
             viewTitle: props.parentCategoryName ? props.parentCategoryName : this.props.viewTitle,
             firebaseApp: this.props.firebaseApp,
-
+            refreshing: false,
             backBtn: this.props.backBtn ? this.props.backBtn : false
         };
 
         this.categoriesProvider = new Categories(this.props.firebaseApp);
     }
+
+    _onRefresh() {
+        this.setState({refreshing: true});
+        this.listenForItems();
+        console.log('i have a big penis');
+    }
+
 
     listenForItems() {
         this.categoriesProvider.getCategoriesByParent(this.state.parentCategory,(categories) => {
@@ -58,8 +66,10 @@ class CategoryView extends Component {
                         progress: progresses,
                     });
                 });
+                let state = this.state;
                 this.setState({
                     categories: items,
+                    refreshing: false,
                     dataSource: this.state.dataSource.cloneWithRows(items)
                 });
             });
@@ -82,6 +92,12 @@ class CategoryView extends Component {
                 <NavBar style={styles.navbar} title={this.state.viewTitle } backBtn = {this.state.backBtn} navigator={this.props.navigator}/>
                 <ListView
                     dataSource={this.state.dataSource}
+                    refreshControl={
+                      <RefreshControl
+                        refreshing={this.state.refreshing}
+                        onRefresh={this._onRefresh.bind(this)}
+                      />
+                    }
                     renderRow={this._renderItem.bind(this)}
                     enableEmptySections={true}
                     style={styles.listview}/>

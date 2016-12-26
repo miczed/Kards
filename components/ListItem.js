@@ -6,30 +6,15 @@ import ReactNative from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 const styles = require('../styles.js');
-const { View, TouchableHighlight, Text } = ReactNative;
+const { View, TouchableHighlight, Text, Animated } = ReactNative;
 
 class ListItem extends Component {
     constructor(props) {
         super(props);
-
         this.state = {
-           cardCount: this.props.item.cardCount,
-
+           cardCount: props.item.progress ? props.item.progress.counts.total : 0,
         };
 
-        if(this.props.item.progress && this.state.cardCount != 0) {
-            this.state.learned = this.props.item.progress.learned ? Object.keys(this.props.item.progress.learned).length : 0;
-            this.state.veryhard = this.props.item.progress.veryhard ? Object.keys(this.props.item.progress.veryhard).length : 0;
-            this.state.hard = this.props.item.progress.hard ? Object.keys(this.props.item.progress.hard).length : 0;
-            this.state.unviewed = this.props.item.progress.unviewed ? Object.keys(this.props.item.progress.unviewed).length : 0;
-            this.state.normal = this.props.item.progress.normal ? Object.keys(this.props.item.progress.normal).length : 0;
-            this.state.learnedPercent = this.state.learned / this.state.cardCount;
-            this.state.veryhardPercent =  this.state.veryhard / this.state.cardCount;
-            this.state.hardPercent = this.state.hard / this.state.cardCount;
-            this.state.unviewedPercent = this.state.unviewed / this.state.cardCount;
-            this.state.normalPercent = this.state.normal / this.state.cardCount ;
-
-        }
     }
     render() {
         return (
@@ -41,26 +26,26 @@ class ListItem extends Component {
                     { this.state.cardCount > 0 ? (
                         <View style={styles.liStats}>
                             <View style={styles.liStatsRow}>
-                                <Text  style={styles.liSubTextSpan}>{this.state.cardCount} Karten</Text>
-                                <Text style={[styles.liSubTextSpan,styles.textLightGrey]}>{ this.state.unviewed } offen</Text>
+                                <Text  style={styles.liSubTextSpan}>{this.props.item.progress.counts.total} Karten</Text>
+                                <Text style={[styles.liSubTextSpan,styles.textLightGrey]}>{ this.props.item.progress.counts.unviewed } offen</Text>
                             </View>
                             <View style={styles.liStatsRow}>
-                                <Text style={[styles.liSubTextSpan,styles.textGreen]}>{ this.state.learned } gelernt</Text>
-                                <Text style={[styles.liSubTextSpan,styles.textLightGreen]}>{ this.state.normal } richtig</Text>
+                                <Text style={[styles.liSubTextSpan,styles.textGreen]}>{ this.props.item.progress.counts.learned } gelernt</Text>
+                                <Text style={[styles.liSubTextSpan,styles.textLightGreen]}>{ this.props.item.progress.counts.normal } richtig</Text>
                             </View>
                             <View style={styles.liStatsRow}>
-                                <Text style={[styles.liSubTextSpan,styles.textRed]}>{ this.state.veryhard } Knacknüsse</Text>
-                                <Text style={[styles.liSubTextSpan,styles.textLightRed]}>{ this.state.hard } unsicher</Text>
+                                <Text style={[styles.liSubTextSpan,styles.textRed]}>{ this.props.item.progress.counts.veryhard } Knacknüsse</Text>
+                                <Text style={[styles.liSubTextSpan,styles.textLightRed]}>{ this.props.item.progress.counts.hard } unsicher</Text>
                             </View>
                         </View>
                     ) : null }
                     { this.props.item.progress ? (
                         <View style={styles.liStatsBar}>
-                            <View style={[styles.liStatsProgress,{ 'flex' : this.state.veryhardPercent, 'backgroundColor': '#FF4B4B' }]}></View>
-                            <View style={[styles.liStatsProgress,{ 'flex' : this.state.hardPercent, 'backgroundColor': '#FF9393' }]}></View>
-                            <View style={[styles.liStatsProgress,{ 'flex' : this.state.normalPercent, 'backgroundColor': '#9CDB81' }]}></View>
-                            <View style={[styles.liStatsProgress,{ 'flex' : this.state.learnedPercent, 'backgroundColor': '#72CC4B' }]}></View>
-                            <View style={[styles.liStatsProgress,{ 'flex' : this.state.unviewedPercent, 'backgroundColor': '#D6D6D6' }]}></View>
+                            <Animated.View style={[styles.liStatsProgress,{ 'flex' : this.props.item.progress.percent.veryhard, 'backgroundColor': '#FF4B4B'}]}></Animated.View>
+                            <View style={[styles.liStatsProgress,{ 'flex' : this.props.item.progress.percent.hard, 'backgroundColor': '#FF9393' }]}></View>
+                            <View style={[styles.liStatsProgress,{ 'flex' : this.props.item.progress.percent.normal, 'backgroundColor': '#9CDB81' }]}></View>
+                            <View style={[styles.liStatsProgress,{ 'flex' : this.props.item.progress.percent.learned, 'backgroundColor': '#72CC4B' }]}></View>
+                            <View style={[styles.liStatsProgress,{ 'flex' : this.props.item.progress.percent.unviewed, 'backgroundColor': '#D6D6D6' }]}></View>
                         </View>
 
                     ) : null}

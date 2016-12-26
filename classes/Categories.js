@@ -176,6 +176,9 @@ export default class Categories {
      * - hard: 1 time wrong in a row
      * - normal: zero or 1 time right in a row
      * - learned: two times right in a row
+     * - unviewed: cards which haven't been learned at all
+     * - counts: the sum of each group
+     * - percent: percentage of each group
      * @param progress : Object with the cards as keys
      * @return progresses : Object with the specified attributes above
      */
@@ -186,7 +189,8 @@ export default class Categories {
             let normal = {};
             let learned = {};
             let unviewed = {};
-            let counts = { 'veryhard': 0, 'hard': 0, 'normal': 0, 'learned':0, 'unviewed': 0};
+            let counts = { 'veryhard': 0, 'hard': 0, 'normal': 0, 'learned':0, 'unviewed': 0, 'total': 0};
+            let percent = { 'veryhard': 0, 'hard': 0, 'normal': 0, 'learned':0, 'unviewed': 0};
             Object.keys(progress).forEach(function(key) {
                 let val = progress[key];
                 if (progress.hasOwnProperty(key)) {
@@ -206,9 +210,15 @@ export default class Categories {
                         unviewed[key] = val;
                         counts.unviewed++;
                     }
+                    counts.total = counts.veryhard + counts.hard + counts.learned + counts.normal + counts.unviewed;
+                    percent.learned = counts.learned / counts.total;
+                    percent.veryhard =  counts.veryhard / counts.total;
+                    percent.hard = counts.hard / counts.total;
+                    percent.unviewed = counts.unviewed / counts.total;
+                    percent.normal = counts.normal / counts.total;
                 }
             });
-            return {'veryhard': veryhard, 'hard': hard, 'normal': normal, 'learned': learned, 'unviewed': unviewed, 'counts': counts};
+            return {'veryhard': veryhard, 'hard': hard, 'normal': normal, 'learned': learned, 'unviewed': unviewed, 'counts': counts, 'percent': percent};
         } else {
             return null;
         }
