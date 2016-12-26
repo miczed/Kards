@@ -42,7 +42,6 @@ class CategoryView extends Component {
     _onRefresh() {
         this.setState({refreshing: true});
         this.listenForItems();
-        console.log('i have a big penis');
     }
 
 
