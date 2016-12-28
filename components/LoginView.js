@@ -48,7 +48,7 @@ class LoginView extends Component {
 
                 this.props.navigator.push({
                     component: CategoryView,
-                    passProps: {user: user}
+                    passProps: {user: user, firebaseApp: this.props.firebaseApp, viewTitle: 'Kards'}
                 });
 
             }, (error) => {
