@@ -32,6 +32,7 @@
 		BC64296B7BC24AC49C2D2632 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 61EDBBD07B7E46D3AB68FDC7 /* FontAwesome.ttf */; };
 		C30094EBCB704A9AAE942A20 /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 37F0A07DB2664D5FAC1D9940 /* libBVLinearGradient.a */; };
 		C3EC6422E2FA4597837F5EF0 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EEF9015CAA9944B8B8A1986A /* EvilIcons.ttf */; };
+		D75BABEE1E144F7900000C6B /* bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D75BABED1E144F7900000C6B /* bg@2x.png */; };
 		D777FD251DF06A2A00AF7C0E /* Merriweather-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D777FD241DF06A2A00AF7C0E /* Merriweather-Bold.ttf */; };
 		D777FD261DF06A2A00AF7C0E /* Merriweather-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D777FD241DF06A2A00AF7C0E /* Merriweather-Bold.ttf */; };
 		D777FD281DF06C8200AF7C0E /* Merriweather-BoldIt.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D777FD271DF06C8200AF7C0E /* Merriweather-BoldIt.ttf */; };
@@ -252,6 +253,7 @@
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		8B3F6DB5C536433FB0794A6D /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		BC676B08F3BE45ADB5662DDA /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
+		D75BABED1E144F7900000C6B /* bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg@2x.png"; sourceTree = "<group>"; };
 		D777FD241DF06A2A00AF7C0E /* Merriweather-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Merriweather-Bold.ttf"; sourceTree = "<group>"; };
 		D777FD271DF06C8200AF7C0E /* Merriweather-BoldIt.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Merriweather-BoldIt.ttf"; sourceTree = "<group>"; };
 		D777FD2A1DF06C9000AF7C0E /* Merriweather-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Merriweather-Regular.ttf"; sourceTree = "<group>"; };
@@ -457,6 +459,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				D75BABED1E144F7900000C6B /* bg@2x.png */,
 				D777FD1D1DF069C300AF7C0E /* Fonts */,
 				13B07FAE1A68108700A75B9A /* Kards */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -842,6 +845,7 @@
 				D7AF1A3E1E01F08F00FB55C4 /* SourceSansPro-It.ttf in Resources */,
 				C3EC6422E2FA4597837F5EF0 /* EvilIcons.ttf in Resources */,
 				D7D6AD021DF240E50053F088 /* DINNextRoundedLTPro-Regular.ttf in Resources */,
+				D75BABEE1E144F7900000C6B /* bg@2x.png in Resources */,
 				BC64296B7BC24AC49C2D2632 /* FontAwesome.ttf in Resources */,
 				34A92F765822420890897CDD /* Foundation.ttf in Resources */,
 				471E027F34B64917B703AC2F /* Ionicons.ttf in Resources */,
