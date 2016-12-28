@@ -32,6 +32,7 @@ class CategoryView extends Component {
             parentCategory: props.parentCategoryKey ? props.parentCategoryKey : "",
             viewTitle: props.parentCategoryName ? props.parentCategoryName : this.props.viewTitle,
             firebaseApp: this.props.firebaseApp,
+            user: this.props.user,
             refreshing: false,
             backBtn: this.props.backBtn ? this.props.backBtn : false
         };
@@ -47,7 +48,7 @@ class CategoryView extends Component {
 
     listenForItems() {
         this.categoriesProvider.getCategoriesByParent(this.state.parentCategory,(categories) => {
-            this.categoriesProvider.getProgress((progress) => {
+            this.categoriesProvider.getProgress(this.state.user.uid,(progress) => {
                 // get children as an array
                 let items = [];
                 categories.forEach((category) => {
@@ -118,7 +119,7 @@ class CategoryView extends Component {
                 this.props.navigator.push({
                     title: item.title,
                     component: CategoryView,
-                    passProps: { parentCategoryName: item.title, parentCategoryKey: item._key, firebaseApp: this.state.firebaseApp, backBtn: true },
+                    passProps: { parentCategoryName: item.title, parentCategoryKey: item._key, firebaseApp: this.state.firebaseApp, backBtn: true, user: this.state.user },
                     navigationBarHidden:  true,
                     backButtonTitle: ''
                 });
@@ -154,7 +155,8 @@ class CategoryView extends Component {
                                     categoryName: item.title,
                                     firebaseApp: this.state.firebaseApp,
                                     viewTitle: item.title,
-                                    progressGroup: progressGroups[buttonIndex]
+                                    progressGroup: progressGroups[buttonIndex],
+                                    user: this.state.user,
                                 },
                                 navigationBarHidden: true,
                                 backButtonTitle: ''

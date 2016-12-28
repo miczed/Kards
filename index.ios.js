@@ -16,13 +16,19 @@ import {
     AlertIOS,
     NavigatorIOS,
     StatusBar,
+    AsyncStorage,
 } from 'react-native';
 
+/** Someday I am going to finish implementing redux
+ * https://medium.com/@jonlebensold/getting-started-with-react-native-redux-2b01408c0053#.feuit18oc
+ */
+//import {Provider} from 'react-redux';
+//import {createStore, applyMiddleware, combineReduxers, compose } from 'redux';
+//import createLogger from 'redux-logger';
 
+const LoginView = require('./components/LoginView');
 const CategoryView = require('./components/CategoryView');
 const styles = require('./styles.js');
-
-const YoloView = require('./components/LearnView');
 
 // Initialize Firebase
 const firebaseConfig = {
@@ -35,6 +41,24 @@ const firebaseConfig = {
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 
 export default class Kards extends Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            component: null,
+            loaded: false,
+            user: null,
+        };
+    }
+    componentWillMount(){
+        /* Redirect to login page if user is not logged in */
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                this.setState({component: CategoryView, user: user});
+            } else {
+                this.setState({component: LoginView});
+            }
+        });
+    }
 
     render() {
         return (
@@ -42,18 +66,21 @@ export default class Kards extends Component {
                 <StatusBar
                     barStyle="dark-content"
                 />
-                <NavigatorIOS
-                    style={styles.navigator}
-                    initialRoute={{
+                {this.state.component ? (
+                        <NavigatorIOS
+                            style={styles.navigator}
+                            initialRoute={{
                         title: 'Kards',
-                        component: CategoryView,
-                        passProps: { viewTitle: 'Kards', firebaseApp: firebaseApp }
+                        component: this.state.component,
+                        passProps: { viewTitle: 'Kards', firebaseApp: firebaseApp, user: this.state.user }
                     }}
-                    shadowHidden={false}
-                    navigationBarHidden={true}
-                    transcluent={false}
-                />
-
+                            shadowHidden={false}
+                            navigationBarHidden={true}
+                            transcluent={false}
+                        />
+                    ) : (
+                        null
+                    ) }
             </View>
         )
     }

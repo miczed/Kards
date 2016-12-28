@@ -25,31 +25,39 @@ export default class Cards {
     /**
      * Returns the firebase reference to the progress of a card
      * @param cardKey : String key of the card
+     * @param userId : ID of the user
      * @returns {*} reference to the firebase object
      */
-    getCardProgressRef(cardKey) {
-        return this.firebaseApp.database().ref('progress/' + cardKey);
+    getCardProgressRef(cardKey, userId) {
+        return this.firebaseApp.database().ref('progress/' + userId + "/" + cardKey);
     }
 
     /**
      * Returns the firebase reference to the progress
+     * @param userId : ID of the user
      * @returns {*} reference to the firebase object
      */
-    getProgressRef() {
-        return this.firebaseApp.database().ref('progress');
+    getProgressRef(userId) {
+        return this.firebaseApp.database().ref('progress/' + userId);
     }
 
     /**
      * Returns the firebase reference to the favorites of a card
      * @param cardKey : String key of the card
+     * @param userId : ID of the user
      * @returns {*} reference to the firebase object
      */
-    getCardFavoriteRef(cardKey) {
-        return this.firebaseApp.database().ref('favorites/' + cardKey);
+    getCardFavoriteRef(cardKey, userId) {
+        return this.firebaseApp.database().ref('favorites/'  + userId + "/" + cardKey);
     }
 
-    getFavoritesRef() {
-        return this.firebaseApp.database().ref('favorites');
+    /**
+     * Returns the firebase reference to the favorites of a user
+     * @param userId : ID of the user
+     * @returns {*} reference to the firebase object
+     */
+    getFavoritesRef(userId) {
+        return this.firebaseApp.database().ref('favorites/' + userId);
     }
 
     /**
@@ -114,9 +122,10 @@ export default class Cards {
     /**
      * Increases the progress of a card
      * @param cardKey : String key of the card
+     * @param userId : ID of the user
      */
-    increaseCardProgress(cardKey) { // TESTED
-        let progressRef = this.getCardProgressRef(cardKey).child('progress');
+    increaseCardProgress(cardKey, userId) { // TESTED
+        let progressRef = this.getCardProgressRef(cardKey,userId).child('progress');
         progressRef.transaction(function (current_value) {
             if(!current_value) {
                 return 1;
@@ -131,9 +140,10 @@ export default class Cards {
     /**
      * Decreases the progress of a card
      * @param cardKey : String key of the card
+     * @param userId : ID of the user
      */
-    decreaseCardProgress(cardKey) { // TESTED
-        let progressRef = this.getCardProgressRef(cardKey).child('progress');
+    decreaseCardProgress(cardKey, userId) { // TESTED
+        let progressRef = this.getCardProgressRef(cardKey, userId).child('progress');
         progressRef.transaction(function (current_value) {
             if(!current_value) {
                 return -1;
@@ -146,17 +156,31 @@ export default class Cards {
         });
     }
 
+    static moveFbRecord(oldRef, newRef) {
+        oldRef.once('value', function(snap)  {
+            newRef.set( snap.val(), function(error) {
+                //if( !error ) {  //oldRef.remove(); }
+                //else if( typeof(console) !== 'undefined' && console.error ) {  console.error(error); }
+            });
+        });
+    }
+
+
     /**
-     * Helper function that merges two firebase objects the attributes are only merged if both objects contain the same keys
+     * Helper function that merges two firebase objects
+     * the attributes are only merged if both objects contain the same keys
+     *
      * @param first : object into which the data should be merged
      * @param second : object from which the data should be taken
      * @returns {*} merged object
      */
     leftJoin(first,second) {
-        for (let key in first) {
-            if (first.hasOwnProperty(key)) {
-                if(second[key]) {
-                    Object.assign(first[key],second[key]);
+        if(first && second) {
+            for (let key in first) {
+                if (first.hasOwnProperty(key)) {
+                    if (second[key]) {
+                        Object.assign(first[key], second[key]);
+                    }
                 }
             }
         }
@@ -202,28 +226,31 @@ export default class Cards {
     /**
      * Resets the progress of a card to zero
      * @param cardKey : String key of the card
+     * @param userId : ID of the user
      */
-    resetCardProgress(cardKey) { // TESTED
+    resetCardProgress(cardKey,userId) { // TESTED
         let updates = {};
         updates['progress'] = 0;
-        this.getCardProgressRef(cardKey).update(updates);
+        this.getCardProgressRef(cardKey,userId).update(updates);
     }
 
     /**
      * Sets the favorite boolean of the card
      * @param cardKey : String key of the card
      * @param bool : boolean the value that should be set
+     * @param userId : ID of the user
      */
-    setCardFavorite(cardKey,bool = true) {
-        this.getCardFavoriteRef(cardKey).set({'favorite' : bool});
+    setCardFavorite(cardKey,bool = true,userId) {
+        this.getCardFavoriteRef(cardKey,userId).set({'favorite' : bool});
     }
 
     /**
      * Gets all the favorite cards
      * @param callback : Function that gets called when the promise is resolved
+     * @param userId : ID of the user
      */
-    getFavorites(callback) {
-        this.getFavoritesRef().once('value',(favorites) => {
+    getFavorites(userId, callback) {
+        this.getFavoritesRef(userId).once('value',(favorites) => {
             callback(favorites.val());
         });
     }
@@ -231,9 +258,10 @@ export default class Cards {
     /**
      * Returns the progress for all cards
      * @param callback : Function that gets called when the promise is resolved
+     * @param userId : ID of the user
      */
-    getProgress(callback) {
-        let progressRef = this.getProgressRef();
+    getProgress(userId,callback) {
+        let progressRef = this.getProgressRef(userId);
         progressRef.once("value", (progressSnap) => {
             if(progressSnap.val()) {
                 callback(progressSnap.val());
@@ -243,8 +271,8 @@ export default class Cards {
         });
     }
 
-    getProgressByGroup(progressGroup,callback) {
-        let ref = this.getProgressRef().orderByChild("progress");
+    getProgressByGroup(progressGroup,userId,callback) {
+        let ref = this.getProgressRef(userId).orderByChild("progress");
         if(progressGroup == "veryhard") {
             ref = ref.endAt(-2);
         } else if(progressGroup == "hard") {
@@ -265,10 +293,10 @@ export default class Cards {
         });
     }
 
-    getCardsWithFavorites(catKey,callback) {
+    getCardsWithFavorites(catKey,userId,callback) {
         this.getCardsByCategory(catKey,(cards) => {
-            this.getFavorites((favorites) => {
-                this.getProgress((progress) => {
+            this.getFavorites(userId,(favorites) => {
+                this.getProgress(userId,(progress) => {
                    callback(this.toArray(this.leftJoin(this.leftJoin(cards,favorites),progress)));
                 });
             });

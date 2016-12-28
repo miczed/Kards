@@ -26,11 +26,12 @@ export default class Categories {
     }
 
     /**
-     * Returns the firebase reference to the progress
+     * Returns the firebase reference to the progress of one user
+     * @param userId: ID of the user
      * @returns {*} reference to the firebase object
      */
-    getProgressRef() {
-        return this.firebaseApp.database().ref('progress');
+    getProgressRef(userId) {
+        return this.firebaseApp.database().ref('progress/' + userId);
     }
 
     getCategoryRefByParent(parentKey) {
@@ -123,10 +124,12 @@ export default class Categories {
      * @returns {*} merged object
      */
     leftJoin(first,second) {
-        for (let key in first) {
-            if (first.hasOwnProperty(key)) {
-                if(typeof second[key] !== 'undefined' || second[key] !== null) {
-                    Object.assign(first[key],second[key]);
+        if(first && second) {
+            for (let key in first) {
+                if (first.hasOwnProperty(key)) {
+                    if (typeof second[key] !== 'undefined' || second[key] !== null) {
+                        Object.assign(first[key], second[key]);
+                    }
                 }
             }
         }
@@ -156,11 +159,12 @@ export default class Categories {
     }
 
     /**
-     * Returns the progress for all cards
+     * Returns the progress for all cards for one user
+     * @param userId : ID of the user
      * @param callback : Function that gets called when the promise is resolved
      */
-    getProgress(callback) {
-        let progressRef = this.getProgressRef();
+    getProgress(userId,callback) {
+        let progressRef = this.getProgressRef(userId);
         progressRef.once("value", (progressSnap) => {
             if(progressSnap.val()) {
                 callback(progressSnap.val());

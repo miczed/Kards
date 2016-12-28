@@ -361,7 +361,71 @@ var styles = StyleSheet.create({
         opacity: 0.1,
         marginBottom: 15,
         marginTop: 15,
-    }
+    },
+    backgroundImageContainer:{
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: vheight,
+        width: vwidth,
+        position: 'absolute',
+        top: 0,
+        left:0,
+    },
+    backgroundImage: {
+        flex: 0,
+        alignSelf: 'center',
+    },
+    loginTextInput: {
+        height: 55,
+        fontFamily: constants.dinNextMedium,
+        color: constants.brandSubColor,
+        fontSize: 16,
+        flex: 0,
+    },
+    loginView: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    loginBox: {
+        backgroundColor: '#fff',
+        borderRadius: 6,
+        borderWidth: 1,
+        borderColor: '#E9E9E9',
+        paddingHorizontal: 20,
+        alignSelf: 'stretch',
+        marginLeft: 10,
+        marginRight: 10,
+        shadowColor: constants.brandMainColor,
+        shadowOpacity: 0.05,
+        shadowRadius: 3,
+        shadowOffset: {
+            height: 2,
+            width: 0,
+        },
+    },
+    textInputSeparator: {
+        flex: 0,
+        alignSelf: 'stretch',
+        height: 1,
+        backgroundColor: '#EAEAEA',
+    },
+    buttonGreenContainer: {
+        borderWidth: 0,
+        backgroundColor: constants.green,
+        paddingVertical: 0,
+        height: 40,
+        width: 200,
+        paddingTop: 13,
+        marginTop: 50,
+    },
+    buttonGreenText: {
+        fontFamily: constants.dinNextMedium,
+        color: 'white',
+        fontSize: 16,
+        backgroundColor: constants.green,
+        letterSpacing: 1,
+    },
 });
 
 module.exports = styles;

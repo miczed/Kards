@@ -107,9 +107,8 @@ class LearnView extends Component {
             categoryName: this.props.categoryName,
             firebaseApp: this.props.firebaseApp,
             cardsProvider: new Cards(this.props.firebaseApp),
+            user: this.props.user,
         };
-         this.cardsRef = this.getRef().child('cards').orderByChild("category").equalTo(this.state.categoryKey);
-
 
         // Mock Data
         /*this.state = {
@@ -130,11 +129,9 @@ class LearnView extends Component {
             [a[i - 1], a[j]] = [a[j], a[i - 1]];
         }
     }
-    getRef() {
-        return this.state.firebaseApp.database().ref();
-    }
+
     listenForCards() {
-        this.state.cardsProvider.getCardsWithFavorites(this.state.categoryKey,(cardsWithFavorites) => {
+        this.state.cardsProvider.getCardsWithFavorites(this.state.categoryKey,this.state.user.uid,(cardsWithFavorites) => {
             this.shuffle(cardsWithFavorites);
             let groupedCards = this.state.cardsProvider.groupCardsByProgress(cardsWithFavorites);
             if(this.props.progressGroup == "unknown") {
@@ -159,15 +156,15 @@ class LearnView extends Component {
         this.listenForCards();
     }
     handleYup = (card) => {
-        this.state.cardsProvider.increaseCardProgress(card._key);
+        this.state.cardsProvider.increaseCardProgress(card._key,this.state.user.uid);
     }
     handleNope = (card) => {
-        this.state.cardsProvider.decreaseCardProgress(card._key);
+        this.state.cardsProvider.decreaseCardProgress(card._key,this.state.user.uid);
     }
     handleFavorite = (card) => {
         const index = this.state.cards.findIndex(x => x._key === card._key);
         this.state.cards[index].favorite = card.favorite;
-        this.state.cardsProvider.setCardFavorite(card._key,card.favorite);
+        this.state.cardsProvider.setCardFavorite(card._key,card.favorite, this.state.user.uid);
     }
     /**
      * Resets the cards state and creates a new uid so that the SwipeCards implementation will change
