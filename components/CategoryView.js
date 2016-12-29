@@ -29,7 +29,7 @@ class CategoryView extends Component {
             dataSource: new ListView.DataSource({
                 rowHasChanged: (row1, row2) => row1 !== row2,
             }),
-            parentCategory: props.parentCategoryKey ? props.parentCategoryKey : "",
+            parentCategory: props.parentCategoryKey ? props.parentCategoryKey : null,
             viewTitle: props.parentCategoryName ? props.parentCategoryName : this.props.viewTitle,
             firebaseApp: this.props.firebaseApp,
             user: this.props.user,
