@@ -21,7 +21,7 @@ import clamp from 'clamp';
 import Emoji from 'react-native-emoji';
 import Button from 'react-native-button';
 const styles = require('../styles.js');
-import AnimatedIcon from '../components/AnimatedIcon';
+import AnimatedIcon from './AnimatedIcon';
 import Defaults from './Defaults.js';
 
 var SWIPE_THRESHOLD = 120;

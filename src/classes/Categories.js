@@ -41,9 +41,10 @@ export default class Categories {
     /**
      * Gets all the categories that are children of the specified key's category
      * @param parentKey : String key of the parent category
-     * @param callback : Function gets called when the promise is resolved
+     * @param success : Function gets called when the promise is resolved
+     * @param failure : Function gets called when promise failes
      */
-    getCategoriesByParent(parentKey = "", callback) {
+    getCategoriesByParent(parentKey = "", success ,failure) {
         let ref = this.getCategoriesRef().orderByChild("parent").equalTo(parentKey);
         ref.once('value',function(snapshot) {
             let items = [];
@@ -55,8 +56,9 @@ export default class Categories {
                     return obj;
                 });
             }
-            callback(items);
-
+            success(items);
+        }, (error) => {
+            failure(error);
         });
     }
     /**
@@ -161,17 +163,18 @@ export default class Categories {
     /**
      * Returns the progress for all cards for one user
      * @param userId : ID of the user
-     * @param callback : Function that gets called when the promise is resolved
+     * @param success : Function that gets called when the promise is resolved
+     * @param failure : Function that gets called when the promise failed
      */
-    getProgress(userId,callback) {
+    getProgress(userId,success,failure) {
         let progressRef = this.getProgressRef(userId);
         progressRef.once("value", (progressSnap) => {
             if(progressSnap.val()) {
-                callback(progressSnap.val());
+                success(progressSnap.val());
             } else {
-                callback(null);
+                success(null);
             }
-        });
+        }, (error) => { failure(error) });
     }
 
     /**

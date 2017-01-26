@@ -1,4 +1,4 @@
-import * as firebase from 'firebase';
+
 import React, { Component } from 'react';
 import {
     StyleSheet,
@@ -11,10 +11,13 @@ import {
     ActivityIndicator,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
+import { observer } from 'mobx-react/native';
+import { app } from '../stores';
 import Cards from '../classes/Cards';
 const styles = require('../styles.js');
-const SwipeCards = require('../components/SwipeCards.js');
-const NavBar = require('../components/NavBar');
+const SwipeCards = require('../components/SwipeCards');
+
+import firebaseApp from '../helpers/firebase';
 
 /* if we decide to work with katex again uncomment this line */
 //const katexCSS = "<link rel='stylesheet' href='katex/katex.min.css'>";
@@ -98,6 +101,12 @@ class Card extends Component {
 
 
 class LearnView extends Component {
+    static navigatorButtons = {
+        leftButtons: [{
+            title: 'Schliessen', // for a textual button, provide the button title (label)
+            id: 'close', // id for this button, given in onNavigatorEvent(event) to help understand which button was clicked
+        }] // buttons for the left side of the nav bar (optional)
+    };
     constructor(props) {
         super(props);
 
@@ -105,10 +114,13 @@ class LearnView extends Component {
         this.state = {
             categoryKey: this.props.categoryKey,
             categoryName: this.props.categoryName,
-            firebaseApp: this.props.firebaseApp,
-            cardsProvider: new Cards(this.props.firebaseApp),
+            cardsProvider: new Cards(firebaseApp),
             user: this.props.user,
         };
+        this.app = app;
+
+        // if you want to listen on navigator events, set this up
+        this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
 
         // Mock Data
         /*this.state = {
@@ -119,6 +131,19 @@ class LearnView extends Component {
             actCard: 1,
         };*/
     }
+
+    onNavigatorEvent(event) { // this is the onPress handler for the two buttons together
+        console.error("OMG BUTTON PRESSED!!");
+        if (event.type == 'NavBarButtonPress') { // this is the event type for button presses
+
+            if (event.id == 'close') { // this is the same id field from the static navigatorButtons definition
+
+                this.props.navigator.dismissModal();
+            }
+
+        }
+    }
+
     /**
      * Shuffles array in place. ES6 version
      * @param {Array} a items The array containing the items.
@@ -131,7 +156,7 @@ class LearnView extends Component {
     }
 
     listenForCards() {
-        this.state.cardsProvider.getCardsWithFavorites(this.state.categoryKey,this.state.user.uid,(cardsWithFavorites) => {
+        this.state.cardsProvider.getCardsWithFavorites(this.state.categoryKey,this.app.user.uid,(cardsWithFavorites) => {
             this.shuffle(cardsWithFavorites);
             let groupedCards = this.state.cardsProvider.groupCardsByProgress(cardsWithFavorites);
             if(this.props.progressGroup == "unknown") {
@@ -156,15 +181,15 @@ class LearnView extends Component {
         this.listenForCards();
     }
     handleYup = (card) => {
-        this.state.cardsProvider.increaseCardProgress(card._key,this.state.user.uid);
+        this.state.cardsProvider.increaseCardProgress(card._key,this.app.user.uid);
     }
     handleNope = (card) => {
-        this.state.cardsProvider.decreaseCardProgress(card._key,this.state.user.uid);
+        this.state.cardsProvider.decreaseCardProgress(card._key,this.app.user.uid);
     }
     handleFavorite = (card) => {
         const index = this.state.cards.findIndex(x => x._key === card._key);
         this.state.cards[index].favorite = card.favorite;
-        this.state.cardsProvider.setCardFavorite(card._key,card.favorite, this.state.user.uid);
+        this.state.cardsProvider.setCardFavorite(card._key,card.favorite, this.app.user.uid);
     }
     /**
      * Resets the cards state and creates a new uid so that the SwipeCards implementation will change
@@ -180,7 +205,6 @@ class LearnView extends Component {
     renderLoadingView() {
         return (
             <View style={styles.viewContainer}>
-                <NavBar style={styles.navbar} title={this.props.viewTitle } backBtn={true} navigator={this.props.navigator}/>
                 <View style={styles.loadingView}><ActivityIndicator size='large' /><Text style={styles.loadingViewText}>KARTEN WERDEN GELADEN</Text></View>
             </View>
         );
@@ -188,7 +212,6 @@ class LearnView extends Component {
     renderCardsView() {
         return (
             <View style={styles.viewContainer}>
-                <NavBar style={styles.navbar} title={this.props.viewTitle } backBtn={true} navigator={this.props.navigator}/>
                 <SwipeCards
                     cards={this.state.cards}
                     renderCard={(cardData) => <Card {...cardData} />}

@@ -14,15 +14,20 @@ import {
     ActionSheetIOS,
     RefreshControl,
 } from 'react-native';
+import { observer } from 'mobx-react/native';
+import { app } from '../stores';
 
-const LearnView = require('../components/LearnView');
 const ListItem = require('../components/ListItem');
 const styles = require('../styles.js');
-const NavBar = require('../components/NavBar');
 import Categories from '../classes/Categories';
+import firebase from '../helpers/firebase';
 
+@observer
 class CategoryView extends Component {
-
+    static navigatorStyle = {
+        navBarTextColor: '#00BC80', // change the text color of the title (remembered across pushes)
+        navBarButtonColor: '#D8D8D8', // change the button colors of the nav bar (eg. the back button) (remembered across pushes)
+    };
     constructor(props) {
         super(props);
         this.state = {
@@ -31,13 +36,11 @@ class CategoryView extends Component {
             }),
             parentCategory: props.parentCategoryKey ? props.parentCategoryKey : null,
             viewTitle: props.parentCategoryName ? props.parentCategoryName : this.props.viewTitle,
-            firebaseApp: this.props.firebaseApp,
-            user: this.props.user,
             refreshing: false,
             backBtn: this.props.backBtn ? this.props.backBtn : false
         };
-
-        this.categoriesProvider = new Categories(this.props.firebaseApp);
+        this.app = app;
+        this.categoriesProvider = new Categories(firebase);
     }
 
     _onRefresh() {
@@ -48,7 +51,7 @@ class CategoryView extends Component {
 
     listenForItems() {
         this.categoriesProvider.getCategoriesByParent(this.state.parentCategory,(categories) => {
-            this.categoriesProvider.getProgress(this.state.user.uid,(progress) => {
+            this.categoriesProvider.getProgress(this.app.user.uid,(progress) => {
                 // get children as an array
                 let items = [];
                 categories.forEach((category) => {
@@ -66,22 +69,25 @@ class CategoryView extends Component {
                         progress: progresses,
                     });
                 });
-                let state = this.state;
                 this.setState({
                     categories: items,
                     refreshing: false,
                     dataSource: this.state.dataSource.cloneWithRows(items)
                 });
+            },(error) => {
+                console.error(error);
             });
+        },(error) => {
+            console.error(error);
         });
     }
     componentDidMount() {
         this.listenForItems();
+
     }
     renderLoadingView() {
         return (
             <View style={styles.viewContainer}>
-                <NavBar style={styles.navbar} title={this.state.viewTitle } backBtn = {this.state.backBtn} navigator={this.props.navigator}/>
                 <View style={styles.loadingView}><ActivityIndicator size='large' /><Text style={styles.loadingViewText}>KARTEN WERDEN GELADEN</Text></View>
             </View>
         );
@@ -89,7 +95,6 @@ class CategoryView extends Component {
     renderCategoriesView() {
         return (
             <View style={styles.container}>
-                <NavBar style={styles.navbar} title={this.state.viewTitle } backBtn = {this.state.backBtn} navigator={this.props.navigator}/>
                 <ListView
                     dataSource={this.state.dataSource}
                     refreshControl={
@@ -117,11 +122,11 @@ class CategoryView extends Component {
             // it is an empty category or a parent category
             if(item.cardCount == 0) {
                 this.props.navigator.push({
-                    title: item.title,
-                    component: CategoryView,
-                    passProps: { parentCategoryName: item.title, parentCategoryKey: item._key, firebaseApp: this.state.firebaseApp, backBtn: true, user: this.state.user },
-                    navigationBarHidden:  true,
-                    backButtonTitle: ''
+                    screen: 'kards.CategoryView', // unique ID registered with Navigation.registerScreen
+                    title: item.title, // navigation bar title of the pushed screen (optional)
+                    passProps: {parentCategoryName: item.title, parentCategoryKey: item._key}, // simple serializable object that will pass as props to the pushed screen (optional)
+                    animated: true, // does the push have transition animation or does it happen immediately (optional)
+                    backButtonHidden: false, // hide the back button altogether (optional)
                 });
             } else { // category has cards
                 let progressGroups = ["all"];
@@ -147,9 +152,9 @@ class CategoryView extends Component {
                     },
                     (buttonIndex) => {
                         if(progressGroups[buttonIndex]) {
-                            this.props.navigator.push({
-                                title: item.title,
-                                component: LearnView,
+                            this.props.navigator.showModal({
+                                screen: "kards.LearnView", // unique ID registered with Navigation.registerScreen
+                                title: item.title, // title of the screen as appears in the nav bar (optional)
                                 passProps: {
                                     categoryKey: item._key,
                                     categoryName: item.title,
@@ -158,8 +163,7 @@ class CategoryView extends Component {
                                     progressGroup: progressGroups[buttonIndex],
                                     user: this.state.user,
                                 },
-                                navigationBarHidden: true,
-                                backButtonTitle: ''
+                                animationType: 'slide-up' // 'none' / 'slide-up' , appear animation for the modal (optional, default 'slide-up')
                             });
                         }
                     });

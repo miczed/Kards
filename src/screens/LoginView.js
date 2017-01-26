@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import {
     AppRegistry,
@@ -14,14 +13,22 @@ import {
     Image,
     TextInput,
 } from 'react-native';
+import { observer } from 'mobx-react/native';
+import {app} from '../stores';
 
 import Button from 'react-native-button';
+import firebaseApp from '../helpers/firebase';
 
-const CategoryView = require('../components/CategoryView');
+//const CategoryView = require('CategoryView'); TODO: load with new navigator component
 const styles = require('../styles.js');
 
-class LoginView extends Component {
 
+@observer
+class LoginView extends Component {
+    // Hide the navbar
+    static navigatorStyle = {
+        navBarHidden: true
+    };
     constructor(props) {
         super(props);
         this.state = {
@@ -29,28 +36,17 @@ class LoginView extends Component {
             password: null,
             loaded : false,
             user: this.props.user
-        }
+        };
+        this.app = app;
     }
 
-    componentDidMount() {
-
-    }
     login = () => {
         this.setState({
             loaded: false
         });
         if(this.state.email && this.state.password) {
-            this.props.firebaseApp.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then((user) => {
-                this.setState({
-                    loaded: true,
-                    user: user,
-                });
-
-                this.props.navigator.push({
-                    component: CategoryView,
-                    passProps: {user: user, firebaseApp: this.props.firebaseApp, viewTitle: 'Kards'}
-                });
-
+            firebaseApp.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then((user) => {
+                this.app.login(user);
             }, (error) => {
                 // Handle Errors here.
                 let errorCode = error.code;
