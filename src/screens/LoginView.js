@@ -19,7 +19,6 @@ import {app} from '../stores';
 import Button from 'react-native-button';
 import firebaseApp from '../helpers/firebase';
 
-//const CategoryView = require('CategoryView'); TODO: load with new navigator component
 const styles = require('../styles.js');
 
 
